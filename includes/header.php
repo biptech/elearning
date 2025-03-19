@@ -1,9 +1,14 @@
 <?php
- testing now test by ram raj pandey
 
- okay now
-
- by bipin pull request testing to ram raj pandey
-
- again try pull request
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+</head>
+<body>
+</body>
+</html>
