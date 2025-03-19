@@ -12,7 +12,6 @@
 <body>
 <nav class="navbar">
         <div><a class="logo" href="#">eLearning</a></div>
-
         <div class="right-icons">
             <a href="#">Our Courses</a>
             <a href="#">E-Book</a>
