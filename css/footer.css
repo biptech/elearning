@@ -1,0 +1,39 @@
+footer {
+    background-color: #111;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .footer-content {
+    margin-bottom: 15px;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: white;
+  }
+
+  .logo .red {
+    color: red;
+    font-size: 30px;
+  }
+
+  .email {
+    font-size: 16px;
+    margin-top: 5px;
+  }
+
+  .email i {
+    margin-right: 8px;
+    color: white;
+  }
+
+  hr {
+    width: 80%;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    margin: 15px auto;
+  }
