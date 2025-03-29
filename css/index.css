@@ -1,0 +1,219 @@
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 90vh;
+    padding: 50px;
+    background-color: black;
+  }
+
+  .hero-content {
+    max-width: 50%;
+  }
+
+  .hero h1 {
+    font-size: 60px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: rgb(248, 189, 51);
+  }
+
+  .hero p {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 20px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 15px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  .btn.primary {
+    background-color: rgb(248, 189, 51);
+    color: #111;
+  }
+
+  .btn.secondary {
+    border: 2px solid rgb(248, 189, 51);
+    color: rgb(248, 189, 51);
+  }
+
+  .btn:hover {
+    opacity: 0.8;
+  }
+
+  .hero-image {
+    position: relative;
+    justify-content: space-between;
+  }
+
+  .circle {
+    width: 500px;
+    height: 500px;
+    background-color: rgb(248, 189, 51);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .circle img {
+    width: auto;
+    height: auto;
+  }
+
+  .hero-section {
+    padding: 40px 20px;
+    height: 70vh;
+    text-align: center;
+    background-color: #111;
+  }
+
+  h2 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 30px;
+  }
+
+  .highlight {
+    color: rgb(248, 189, 51); /* Blue color for "dream job" */
+    font-weight: bold;
+  }
+
+  .logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .logo-grid img {
+    height: 50px;
+    max-width: 150px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .logo-grid img:hover {
+    transform: scale(1.1);
+  }
+
+  .more-text {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #666;
+  }
+
+  .course-section {
+    text-align: center;
+    margin-bottom: 70px;
+    margin-top: 70px;
+    background-color: black;
+  }
+
+  .course-section h2 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 20px;
+  }
+
+  .highlight {
+    color: rgb(248, 189, 51); /* Blue highlight */
+    font-weight: bold;
+  }
+
+  .carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    max-width: auto;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  .carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Allows horizontal scrolling */
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    padding: 10px;
+
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer/Edge */
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
+  }
+
+  .course {
+    background: #111;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    min-width: 220px;
+    max-width: 220px;
+    text-align: left;
+    justify-content: space-between;
+  }
+
+  .course img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-wrap: balance; /* Improves readability by balancing lines */
+    color: rgb(248, 189, 51);
+  }
+
+  .author {
+    font-size: 14px;
+    color: white;
+  }
+
+  .rating {
+    font-size: 14px;
+    color: #ff9800;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(248, 189, 51);
+  }
+
+  .prev-btn,
+  .next-btn {
+    background-color: rgb(248, 189, 51);
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 50%;
+    margin: 0 10px;
+  }
+
+  .prev-btn:hover,
+  .next-btn:hover {
+    background-color: white;
+}

@@ -1,10 +1,21 @@
+<?php 
+   session_start();
+   include('../includes/config.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>eLearning Navbar</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/index.css">
   </head>
+  <?php include '../includes/header.php'; ?>
   <body>
     <section class="hero">
       <div class="hero-content">
@@ -28,7 +39,6 @@
         </div>
       </div>
     </section>
-
     <section class="hero-section">
       <h2>
         Thousands of students achieved their
@@ -65,6 +75,7 @@
       </h2>
 
       <div class="carousel-container">
+        <button class="prev-btn">&#10094;</button>
         <div class="carousel">
           <div class="course">
             <img src="../images/study-girl.jpg" alt="Full-Stack Bootcamp" />
@@ -81,14 +92,69 @@
             <p class="price">$74.99</p>
           </div>
           <div class="course">
-            <img src="../images/study-girl.jpg" alt="Web Development Masterclass" />
+            <img src="../images/study-girl.jpg" alt="Full-Stack Bootcamp" />
+            <h3>The Complete Full-Stack Web Development Bootcamp</h3>
+            <p class="author">Dr. Angela Yu</p>
+            <p class="rating">⭐ 4.7 (425,438)</p>
+            <p class="price">$74.99</p>
+          </div>
+          <div class="course">
+            <img
+              src="../images/study-girl.jpg"
+              alt="Web Development Masterclass"
+            />
             <h3>Web Development Masterclass - Online Certification</h3>
             <p class="author">YouAccel Training</p>
             <p class="rating">⭐ 4.5 (10,102)</p>
             <p class="price">$74.99</p>
           </div>
+          <div class="course">
+            <img src="../images/study-girl.jpg" alt="Full-Stack Bootcamp" />
+            <h3>The Complete Full-Stack Web Development Bootcamp</h3>
+            <p class="author">Dr. Angela Yu</p>
+            <p class="rating">⭐ 4.7 (425,438)</p>
+            <p class="price">$74.99</p>
+          </div>
+          <div class="course">
+            <img
+              src="../images/study-girl.jpg"
+              alt="Complete Web Developer Course"
+            />
+            <h3>The Complete Web Developer Course 3.0</h3>
+            <p class="author">Rob Percival</p>
+            <p class="rating">⭐ 4.2 (72,408)</p>
+            <p class="price">$74.99</p>
+          </div>
+          <div class="course">
+            <img
+              src="../images/study-girl.jpg"
+              alt="Internet & Web Development"
+            />
+            <h3>Internet and Web Development Fundamentals</h3>
+            <p class="author">YouAccel Training</p>
+            <p class="rating">⭐ 4.3 (1,778)</p>
+            <p class="price">$39.99</p>
+          </div>
         </div>
+        <button class="next-btn">&#10095;</button>
       </div>
     </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.querySelector(".carousel");
+        const prevBtn = document.querySelector(".prev-btn");
+        const nextBtn = document.querySelector(".next-btn");
+
+        prevBtn.addEventListener("click", () => {
+          carousel.scrollBy({ left: -250, behavior: "smooth" });
+        });
+
+        nextBtn.addEventListener("click", () => {
+          carousel.scrollBy({ left: 250, behavior: "smooth" });
+        });
+      });
+    </script>
+        <?php include '../includes/footer.php'; ?>
   </body>
 </html>
