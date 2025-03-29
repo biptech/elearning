@@ -20,9 +20,9 @@
 <nav class="navbar">
         <div><a class="logo" href="#">eLearning</a></div>
         <div class="right-icons">
-            <a href="#">Our Courses</a>
-            <a href="#">E-Book</a>
-            <a href="#">My Learning</a>
+            <a href="cources.php">Our Courses</a>
+            <a href="view_products.php">E-Book</a>
+            <a href="my_learning.php">My Learning</a>
 
             <!-- Profile Dropdown -->
             <div class="profile-section">
