@@ -1,0 +1,373 @@
+.signup-body {
+    width: 100%;
+    min-height: 100vh;
+    background-color: black !important;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: grid;
+    align-items: center;
+    /* grid-template-columns: repeat(2, 1fr); */
+  }
+  
+  /* background-color: #ecececdb; */
+  
+  .signup-txt,
+  .contact-txt,
+  .change-password-txt {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
+  .btnn:hover {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .signup-txt {
+    color: black;
+  }
+  
+  .sign-up,
+  .contact,
+  .update-password-form {
+    width: 400px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 10px;
+    transition: all ease-in-out 0.3s;
+    border-radius: 70px;
+    margin-top: 7%;
+    /* background-color: white; */
+  }
+  
+  .sign-up .s-inputs input,
+  .contact .c-inputs input,
+  .c-inputs textarea,
+  .update-password-form .p-inputs input,
+  .s-inputs select {
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto;
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: white;
+    display: block;
+    width: 70%;
+    transition: all ease-in-out 0.3s;
+    box-shadow: 2px 3px 5px gray;
+    border-radius: 8px;
+  }
+  
+  /* .s-inputs select{
+      color: rgba(0, 0, 0, 0.671);
+  } */
+  .s-inputs select > option {
+    text-align: center;
+  }
+  
+  .s-inputs input:hover,
+  .c-inputs input:hover,
+  .c-inputs textarea:hover,
+  .p-inputs input:hover,
+  .s-inputs select:hover {
+    box-shadow: 2px 3px 13px gray;
+    transition: all ease-in-out 0.3s;
+    border-radius: 8px;
+  }
+  
+  /* .sign-up input:focus,
+  .c-inputs input:focus,
+  .c-inputs textarea:focus,
+  .update-password-box input:focus,
+  .update-c-password-box input:focus {
+    border-color: #e56131;
+  } */
+  
+  /* .sign-up:hover, */
+  
+  .contact:hover,
+  .update-password-form:hover {
+    box-shadow: 0.5px 5px 20px black;
+    transition: all ease-in-out 0.3s;
+    /* background-color: rgb(255, 255, 255); */
+  }
+  
+  .signup-txt {
+    color: rgb(248, 189, 51);
+  }
+  
+  .sign-up input,
+  .contact input,
+  .update-password-form input {
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto;
+    display: block;
+    width: 70%;
+    border-radius: 8px;
+    /* border: 1px solid gray; */
+    /* transition: all ease-in-out 0.3s; */
+  }
+  
+  .c-inputs textarea::placeholder {
+    text-align: center;
+    /* padding: 30px; */
+  }
+  
+  .sign-up input[type="submit"],
+  .contact input[type="submit"],
+  .update-password-form input[type="submit"] {
+    /* border-radius: 0.9rem; */
+    background-color: rgb(248, 189, 51);
+    color: white;
+    border: none;
+    width: 70%;
+    cursor: pointer;
+  }
+  
+  .change-pw-cancel {
+    border-radius: 0.9rem;
+    padding: 10px 13px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .change-pw-cancel:hover {
+    color: #fff;
+    background-color: #e56131;
+  }
+  
+  .sign-up input[type="submit"]:hover,
+  .contact input[type="submit"]:hover,
+  .update-password-form input[type="submit"]:hover {
+    color: #fff;
+    background-color: #e56131;
+    /* transition-duration: 0.3s; */
+    /* box-shadow: 0.5px 1.5px 5px gray; */
+  }
+  
+  .sign-up p a {
+    text-decoration: none;
+    color: rgb(248, 189, 51);
+    font-size: 100%;
+    transition: all ease-in-out 0.2s;
+  }
+  
+  .sign-up:hover p a {
+    color: #e56131;
+  }
+  
+  .sign-up .aha:hover {
+    color: #e56131;
+    transition: all ease-in-out 0.2s;
+  }
+  
+  .sign-up-term-condition-text a,
+  p {
+    color: #fff;
+    font-size: 12px;
+  }
+  
+  .sign-up-form p {
+    line-height: 50px;
+  }
+  
+  .sign-up-password-box {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    text-align: center;
+  }
+  
+  .sign-up-c-password-box {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .sign-up-password-box input,
+  .sign-up-c-password-box input {
+    box-shadow: 2px 3px 5px gray;
+    margin-left: 60px;
+    transition: all ease-in-out 0.3s;
+    border: none;
+    outline: none;
+    /* width: 100%; */
+    /* border-radius: 8px; */
+    /* border-width: 0 0 2px; */
+  }
+  
+  /* .sign-up-password-box .fa-solid,
+  .sign-up-c-password-box .fa-solid {
+    color: white;
+    cursor: pointer;
+    padding-right: 25px;
+  } */
+  
+  /* .sign-up-password-box input::placeholder, .sign-up-c-password-box input::placeholder{
+      margin-left: -30px;
+  } */
+  
+  /* .sign-up-password-box input:focus{
+      border-color: blue;
+  } */
+  
+  .sign-up-password-box input:hover,
+  .sign-up-c-password-box input:hover {
+    box-shadow: 2px 3px 13px gray;
+    transition: all ease-in-out 0.3s;
+    border-radius: 8px;
+  }
+  
+  .login-body {
+    /* background-color: #ecececdb; */
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: cover;
+    display: grid;
+    align-items: center;
+  }
+  
+  .login-form {
+    width: 400px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    transition: all ease-in-out 0.3s;
+  }
+  
+  .login-form:hover {
+    /* box-shadow: 0.5px 5px 20px rgb(0, 0, 0); */
+    transition: all ease-in-out 0.3s;
+    animation: rotate 5s infinite linear;
+  }
+  
+  .login-form .l-inputs input {
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto;
+    outline: 0;
+    border-width: 0 0 2px;
+    /* border-color: white; */
+    display: block;
+    width: 70%;
+    border-radius: 8px;
+    /* transition: all ease-in-out 0.3s; */
+    box-shadow: 2px 3px 5px gray;
+  }
+  
+  input::placeholder {
+    text-align: center;
+    color: rgba(0, 8, 34, 0.658);
+  }
+  
+  .l-inputs input:hover,
+  .login-password-box input:hover,
+  .update-password-box input:hover,
+  .update-c-password-box input:hover,
+  .admin-login-password-box input:hover {
+    box-shadow: 2px 3px 13px gray;
+  }
+  
+  .login-password-box,
+  .admin-login-password-box,
+  .update-password-box,
+  .update-c-password-box {
+    display: flex;
+    align-items: center;
+    /* text-align: center; */
+    height: 60px;
+  }
+  
+  .login-password-box input,
+  .admin-login-password-box input,
+  .update-password-box input,
+  .update-c-password-box input {
+    text-align: center;
+    padding: 10px;
+    /* margin: 10px auto; */
+    margin-left: 58px;
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: white;
+    /* display: block; */
+    width: 70%;
+    border-radius: 8px;
+    transition: all ease-in-out 0.3s;
+    box-shadow: 2px 3px 5px gray;
+  }
+  
+  .login-password-box .fa-solid,
+  .admin-login-password-box .fa-solid {
+    color: white;
+    cursor: pointer;
+    padding-left: 10px;
+  }
+  
+  .update-password-box .fa-solid,
+  .update-c-password-box .fa-solid {
+    cursor: pointer;
+    padding-right: 25px;
+  }
+  
+  .login-txt {
+    color: rgb(248, 189, 51);
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
+  /* .login-txt:hover {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+  } */
+  
+  .login-form p a {
+    padding: 3px;
+    border-radius: 0.5rem;
+    /* background-color: #eeeff17c; */
+    text-decoration: none;
+    color: rgb(248, 189, 51);
+    font-size: 100%;
+  }
+  
+  .login-form input[type="submit"] {
+    padding: 10px;
+    background-color: rgb(248, 189, 51);
+    color: white;
+    border: none;
+    width: 70%;
+    cursor: pointer;
+    border-radius: 8px;
+    /* transition-duration: 0.3s; */
+  }
+  
+  .admin-login-btn input[type="submit"] {
+    margin-top: 20px;
+  }
+  
+  .login-form input[type="submit"]:hover,
+  .login-form input[type="submit"]:focus {
+    color: white;
+    box-shadow: 0.5px 1.5px 5px gray;
+    background-color: #e56131;
+    /* transition-duration: 0.3s; */
+  }
+  
+  .login-form .e-option:hover {
+    color: #e56131;
+    transition: all ease-in-out 0.2s;
+  }
+  
+  .login-form p {
+    line-height: 50px;
+  }
