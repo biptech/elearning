@@ -34,11 +34,131 @@ echo "<script>alert('Invalid Details');</script>";
     <meta name="description" content="101 + News Station Portal.">
     <meta name="author" content="xyz">
     <title>Online Education & Learning System</title>
+    <style>
+        .login-body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .login-bg-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .login-wrapper {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .account-logo-box {
+            text-align: center;
+        }
+
+        .logo-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-link img {
+            max-width: 250px;
+        }
+
+        .login-description {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .sign-in-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .forgot-password-link {
+            text-align: right;
+        }
+
+        .forgot-password {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn-group {
+            margin-top: 20px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background-color: #218838;
+        }
+
+        .back-home-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-home {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="login-body">
     <section class="login-section">
         <div class="container">
             <div class="row align-items-center">
+                <div class="col-md-8 text-center">
+                    <img src="../images/login-bg1.jpg" alt="Login Image" class="login-bg-image">
+                </div>
                 <div class="col-md-4">
                     <div class="login-wrapper">
                         <div class="account-pages">
