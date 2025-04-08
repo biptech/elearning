@@ -20,13 +20,16 @@ $row = mysqli_fetch_assoc($result);
         .custom-wrapper {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
         .custom-topbar {
             background: #3c8dbc;
             padding: 10px 20px;
             color: #fff;
+            display: flex;
+            justify-content: space-between;
+            z-index: 99999;
+
         }
 
         .custom-logo-img {
@@ -43,7 +46,9 @@ $row = mysqli_fetch_assoc($result);
             width: 40px;
             border-radius: 50%;
         }
-
+.custom-welcome-text{
+    color: black;
+}
         .custom-user-dropdown {
             list-style: none;
             padding: 10px;
@@ -103,13 +108,13 @@ $row = mysqli_fetch_assoc($result);
             </a>
         </div>
         <div class="navbar custom-navbar">
-            <ul class="nav navbar-nav navbar-left custom-navbar-left">
+            <!-- <ul class="nav navbar-nav navbar-left custom-navbar-left">
                 <li>
                     <button class="button-menu-mobile custom-menu-button">
                         ☰
                     </button>
                 </li>
-            </ul>
+            </ul> -->
             <ul class="nav navbar-nav navbar-right custom-navbar-right">
                 <li class="dropdown user-box custom-user-box">
                     <a href="#" class="dropdown-toggle user-link custom-user-link">

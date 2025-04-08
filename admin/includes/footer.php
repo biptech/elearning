@@ -1,14 +1,13 @@
 <style>
     .custom-footer {
-        background: #3c8dbc;
-        color: white;
+        color: black;
         padding: 15px;
         text-align: center;
         margin-top: auto;
     }
 
     .footer-link {
-        color: #fff;
+        color: #3c8dbc;
         text-decoration: underline;
     }
 

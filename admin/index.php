@@ -156,9 +156,6 @@ echo "<script>alert('Invalid Details');</script>";
     <section class="login-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-8 text-center">
-                    <img src="../images/login-bg1.jpg" alt="Login Image" class="login-bg-image">
-                </div>
                 <div class="col-md-4">
                     <div class="login-wrapper">
                         <div class="account-pages">
@@ -190,7 +187,7 @@ echo "<script>alert('Invalid Details');</script>";
                                     </div>
                                 </form>
                                 <div class="back-home-link">
-                                    <a href="../index.php" class="back-home">Back Home</a>
+                                    <a href="../public/index.php" class="back-home">Back Home</a>
                                 </div>
                             </div>
                         </div>   
