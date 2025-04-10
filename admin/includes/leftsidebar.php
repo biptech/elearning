@@ -1,12 +1,16 @@
 <style>
+
     .custom-sidebar-container {
         width: 250px;
         background: #222d32;
         color: #b8c7ce;
-        min-height: 100vh;
+        height: 100vh;
         padding: 20px 0;
+        position: fixed;
+        left: 0;
+        top: 70px; /* Match header height */
+        overflow-y: auto;
     }
-
     .custom-menu-list {
         list-style: none;
         padding: 0;

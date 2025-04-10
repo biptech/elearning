@@ -50,6 +50,24 @@ if (isset($_POST['submit'])) {
     color: #2c3e50;
     margin-bottom: 25px;
 }
+
+.breadcrumb-custom {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    .breadcrumb-custom li::after {
+        content: "/";
+        margin: 0 5px;
+    }
+
+    .breadcrumb-custom li:last-child::after {
+        content: "";
+    }
+
 .form-message-box {
     margin-bottom: 25px;
 }
@@ -196,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h4 class="page-title-custom">Add Post</h4>
                 <ul class="breadcrumb-custom">
                     <li><a href="#">Post</a></li>
-                    <li><a href="#">Add Post</a></li>
+                    <!-- <li><a href="#">Add Post</a></li> -->
                     <li class="active">Add Post</li>
                 </ul>
             </div>
