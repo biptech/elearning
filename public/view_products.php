@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('includes/config.php');
+include('../includes/config.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -54,7 +54,7 @@ if (isset($_POST['add_to_cart'])) {
     <link rel="stylesheet" href="css/view_products.css">
 </head>
 <body>
-    <?php include('includes/header.php'); ?>
+    <?php include('../includes/header.php'); ?>
     <section class="products container">
         <h1 id="ourcources" style="text-align: center; margin-top: 60px;">
             <span>SHOP NOW <br> &darr;</span>
@@ -106,6 +106,6 @@ if (isset($_POST['add_to_cart'])) {
             ?>
         </div>
     </section>
-    <?php include('includes/footer.php'); ?>
+    <?php include('../includes/footer.php'); ?>
 </body>
 </html>
