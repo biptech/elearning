@@ -36,6 +36,8 @@ if (isset($_POST['submit'])) {
     margin-left: 250px;
     padding: 30px;
     min-height: calc(100vh - 70px);
+    margin-top: 70px;
+
 }
 .container-custom {
     max-width: 800px;
