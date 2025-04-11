@@ -1,6 +1,6 @@
 <?php 
    session_start();
-   include('includes/config.php');
+   include('../includes/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@
     
 </head>
 <body>
-    <?php include('includes/header.php');?>
+    <?php include('../includes/header.php');?>
 <section class="body">
     <div class="container products">
         <h1 class ="ourcources">
@@ -61,5 +61,5 @@
     </div>
     </body>
     </section>
-    <?php include('includes/footer.php');?>
+    <?php include('../includes/footer.php');?>
 </html>
