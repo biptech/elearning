@@ -1,19 +1,21 @@
 <?php
 session_start();
 include('includes/config.php');
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Session timeout handling
 if (!isset($_SESSION['last_activity'])) {
     $_SESSION['last_activity'] = time();
-} elseif (time() - $_SESSION['last_activity'] > 900) {
+} elseif (time() - $_SESSION['last_activity'] > 900) { // 900 seconds = 15 minutes
     session_unset();
     session_destroy();
-    header('location:index.php?timeout=true');
+    header('location:index.php?timeout=true'); // Indicate session timeout
     exit;
 }
-$_SESSION['last_activity'] = time();
+$_SESSION['last_activity'] = time(); // Update last activity time
 
+// Check if user is logged in
 if (strlen($_SESSION['login']) == 0) {
     header('location:index.php');
     exit;
@@ -23,8 +25,42 @@ $msg = "";
 $error = "";
 
 if (isset($_POST['submit'])) {
-    // Form processing logic remains unchanged
-    // ... [original PHP code here] ...
+    $posttitle = htmlspecialchars($_POST['posttitle'], ENT_QUOTES); // Sanitize input
+    $catid = (int)$_POST['category']; // Cast to integer
+    $subcatid = (int)$_POST['subcategory']; // Cast to integer
+    $postdetails = htmlspecialchars($_POST['postdescription'], ENT_QUOTES); // Sanitize input
+    $postedby = $_SESSION['login'];
+
+    // Generate a URL-friendly slug from the title
+    $url = implode("-", explode(" ", $posttitle));
+
+    // Handle file uploads securely
+    if (isset($_FILES["postimage"]) && $_FILES["postimage"]["error"] == 0) {
+        $imgfile = $_FILES["postimage"]["name"];
+        $extension = strtolower(pathinfo($imgfile, PATHINFO_EXTENSION)); // Get file extension
+        $allowed_extensions = array("jpg", "jpeg", "png", "gif");
+
+        // Validate file extension
+        if (!in_array($extension, $allowed_extensions)) {
+            $error = "Invalid format. Only jpg / jpeg / png / gif allowed.";
+        } else {
+            // Rename the image to avoid conflicts and security issues
+            $imgnewfile = md5(time() . $imgfile) . "." . $extension;
+            move_uploaded_file($_FILES["postimage"]["tmp_name"], "postimages/" . $imgnewfile);
+
+            // Insert post into database using prepared statements
+            $stmt = $con->prepare("INSERT INTO tblposts (PostTitle, CategoryId, SubCategoryId, PostDetails, PostUrl, Is_Active, PostImage, postedBy) VALUES (?, ?, ?, ?, ?, 1, ?, ?)");
+            $stmt->bind_param("siissss", $posttitle, $catid, $subcatid, $postdetails, $url, $imgnewfile, $postedby);
+
+            if ($stmt->execute()) {
+                $msg = "Post successfully added";
+            } else {
+                $error = "Something went wrong. Please try again. Error: " . $stmt->error;
+            }
+        }
+    } else {
+        $error = "Please select an image file to upload.";
+    }
 }
 ?>
 
@@ -32,12 +68,12 @@ if (isset($_POST['submit'])) {
 <?php include('includes/leftsidebar.php'); ?>
 
 <style>
+/* Same style as before */
 .content-page {
     margin-left: 250px;
     padding: 30px;
     min-height: calc(100vh - 70px);
     margin-top: 70px;
-
 }
 .container-custom {
     max-width: 800px;
@@ -52,24 +88,20 @@ if (isset($_POST['submit'])) {
     color: #2c3e50;
     margin-bottom: 25px;
 }
-
 .breadcrumb-custom {
-        list-style: none;
-        padding: 0;
-        display: flex;
-        gap: 5px;
-        font-size: 14px;
-    }
-
-    .breadcrumb-custom li::after {
-        content: "/";
-        margin: 0 5px;
-    }
-
-    .breadcrumb-custom li:last-child::after {
-        content: "";
-    }
-
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 5px;
+    font-size: 14px;
+}
+.breadcrumb-custom li::after {
+    content: "/";
+    margin: 0 5px;
+}
+.breadcrumb-custom li:last-child::after {
+    content: "";
+}
 .form-message-box {
     margin-bottom: 25px;
 }
@@ -157,8 +189,11 @@ if (isset($_POST['submit'])) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize CKEditor
-    ClassicEditor
-        .create(document.querySelector('.textarea-custom'))
+    let postEditor;
+    ClassicEditor.create(document.querySelector('.textarea-custom'))
+        .then(editor => {
+            postEditor = editor;
+        })
         .catch(error => {
             console.error(error);
         });
@@ -185,24 +220,33 @@ document.addEventListener('DOMContentLoaded', function() {
         const category = document.getElementById('category');
         const image = document.getElementById('postimage');
         
+        // Ensure the CKEditor content is synced
+        postEditor.updateSourceElement();
+
         if(title.value.trim() === '') {
             e.preventDefault();
             alert('Please enter a post title');
             title.focus();
             return false;
         }
-        
+
         if(category.value === '') {
             e.preventDefault();
             alert('Please select a category');
             category.focus();
             return false;
         }
-        
+
         if(image.files.length === 0) {
             e.preventDefault();
             alert('Please select an image');
             image.focus();
+            return false;
+        }
+
+        if(postEditor.getData().trim() === '') {
+            e.preventDefault();
+            alert('Please enter post details');
             return false;
         }
     });
@@ -216,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h4 class="page-title-custom">Add Post</h4>
                 <ul class="breadcrumb-custom">
                     <li><a href="#">Post</a></li>
-                    <!-- <li><a href="#">Add Post</a></li> -->
                     <li class="active">Add Post</li>
                 </ul>
             </div>
@@ -254,27 +297,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div class="form-group-custom">
-                    <label for="subcategory">Sub Category</label>
-                    <select name="subcategory" id="subcategory" class="select-custom"></select>
+                    <label for="subcategory">Subcategory</label>
+                    <select name="subcategory" id="subcategory" class="select-custom" required>
+                        <option value="">Select Subcategory</option>
+                    </select>
                 </div>
 
                 <div class="form-group-custom">
                     <label for="postdescription">Post Details</label>
-                    <textarea name="postdescription" class="textarea-custom" required></textarea>
+                    <textarea name="postdescription" id="postdescription" class="textarea-custom" required></textarea>
                 </div>
 
                 <div class="form-group-custom">
-                    <label for="postimage">Feature Image</label>
-                    <input type="file" id="postimage" name="postimage" class="input-file-custom" required>
+                    <label for="postimage">Post Image</label>
+                    <input type="file" name="postimage" id="postimage" class="input-custom" required>
                 </div>
 
                 <div class="form-actions-custom">
                     <button type="submit" name="submit" class="btn-submit-custom">Save and Post</button>
-                    <button type="button" class="btn-discard-custom" onclick="window.location.href='discard.php';">Discard</button>
+                    <a href="manage-posts.php" class="btn-discard-custom">Discard</a>
                 </div>
             </form>
         </div>
     </div>
-
-    <?php include('includes/footer.php'); ?>
 </div>
+
+<?php include('includes/footer.php'); ?>
