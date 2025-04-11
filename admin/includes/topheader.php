@@ -11,10 +11,13 @@ $row = mysqli_fetch_assoc($result);
     <title>Online Education & Learning System</title>
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.png">
     <style>
+
         body.custom-body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f4f6f9;
+    
+
         }
 
         .custom-wrapper {
@@ -23,13 +26,13 @@ $row = mysqli_fetch_assoc($result);
         }
 
         .custom-topbar {
+            position: fixed;
+            width: 100%;
             background: #3c8dbc;
-            padding: 10px 20px;
             color: #fff;
             display: flex;
             justify-content: space-between;
             z-index: 99999;
-
         }
 
         .custom-logo-img {

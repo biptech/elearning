@@ -9,11 +9,20 @@ if (strlen($_SESSION['login']) == 0) {
 <?php include('includes/topheader.php'); ?>
 <?php include('includes/leftsidebar.php'); ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
 <style>
     .admin-dashboard {
         font-family: Arial, sans-serif;
         background: #f7f9fc;
         padding: 20px;
+        margin-top: 70px;
+
     }
 
     .dashboard-content {
@@ -121,7 +130,8 @@ if (strlen($_SESSION['login']) == 0) {
         text-align: left;
     }
 </style>
-
+</head>
+<body>
 <div class="admin-dashboard">
     <div class="dashboard-content">
         <div class="dashboard-container">
@@ -239,3 +249,5 @@ if (strlen($_SESSION['login']) == 0) {
 </div>
 
 <?php } ?>
+</body>
+</html>
