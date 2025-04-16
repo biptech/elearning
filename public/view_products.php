@@ -51,7 +51,7 @@ if (isset($_POST['add_to_cart'])) {
     <meta charset="UTF-8">
     <title>View Products</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/view_products.css">
+    <link rel="stylesheet" href="../css/view_products.css">
 </head>
 <body>
     <?php include('../includes/header.php'); ?>
@@ -71,7 +71,7 @@ if (isset($_POST['add_to_cart'])) {
                         $productId = htmlentities($fetch_product['id'] ?? '0');
             ?>
                         <form action="" method="POST" class="box">
-                            <img src="admin/uploaded_files/<?= $productImage; ?>" class="image" alt="<?= $productName; ?>">
+                            <img src="../admin/uploaded_files/<?= $productImage; ?>" class="image" alt="<?= $productName; ?>">
                             <h3 class="name"><?= $productName; ?></h3>
                             <input type="hidden" name="product_id" value="<?= $productId; ?>">
                             <div class="flex">
