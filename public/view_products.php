@@ -71,7 +71,7 @@ if (isset($_POST['add_to_cart'])) {
                         $productId = htmlentities($fetch_product['id'] ?? '0');
             ?>
                         <form action="" method="POST" class="box">
-                            <img src="admin/uploaded_files/<?= $productImage; ?>" class="image" alt="<?= $productName; ?>">
+                            <img src="../admin/uploaded_files/<?= $productImage; ?>" class="image" alt="<?= $productName; ?>">
                             <h3 class="name"><?= $productName; ?></h3>
                             <input type="hidden" name="product_id" value="<?= $productId; ?>">
                             <div class="flex">
