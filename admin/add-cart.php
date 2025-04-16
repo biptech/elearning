@@ -52,6 +52,126 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
+<style>
+    /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-heading {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: #0056b3;
+    outline: none;
+}
+
+/* Image Upload Styling */
+input[type="file"] {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+input[type="file"]:hover {
+    background-color: #f9f9f9;
+}
+
+/* Buttons Styling */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
+}
+
+.btn-reset {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-reset:hover {
+    background-color: #c82333;
+}
+
+/* Alert Styling */
+.alert {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.success-alert {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error-alert {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+</style>
+
+
+    <!-- Add your JavaScript here -->
+    <script src="path_to_your_javascript.js" defer></script>
 </head>
 <body>
 
@@ -68,7 +188,7 @@ if (isset($_POST['submit'])) {
     <?php endif; ?>
 
     <?php if ($error): ?>
-        <div class="alert error-alert">
+        <div class="alert error-alert" style="display:none;">
             <strong>Error:</strong> <?php echo htmlentities($error); ?>
         </div>
     <?php endif; ?>
