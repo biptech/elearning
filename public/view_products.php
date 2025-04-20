@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 include('../includes/config.php');
 
@@ -26,16 +26,13 @@ if (isset($_POST['add_to_cart'])) {
     $product_id = intval($_POST['product_id']);
     $quantity = max(1, intval($_POST['qty']));
 
-    // Check if the item already exists in the cart
     $check_cart = $conn->prepare("SELECT * FROM cart WHERE user_id = ? AND pid = ?");
     $check_cart->execute([$user_id, $product_id]);
 
     if ($check_cart->rowCount() > 0) {
-        // Update quantity if the product already exists
         $update_cart = $conn->prepare("UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND pid = ?");
         $update_cart->execute([$quantity, $user_id, $product_id]);
     } else {
-        // Insert new item into the cart
         $add_to_cart = $conn->prepare("INSERT INTO cart (user_id, pid, quantity) VALUES (?, ?, ?)");
         $add_to_cart->execute([$user_id, $product_id, $quantity]);
     }
@@ -51,12 +48,12 @@ if (isset($_POST['add_to_cart'])) {
     <meta charset="UTF-8">
     <title>View Products</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/view_products.css">
+    <link rel="stylesheet" href="../css/view-products.css">
 </head>
 <body>
     <?php include('../includes/header.php'); ?>
     <section class="products container">
-        <h1 id="ourcources" style="text-align: center; margin-top: 60px;">
+        <h1 id="ourcources" style="text-align: center; color: rgb(248, 189, 51);">
             <span>SHOP NOW <br> &darr;</span>
         </h1>
         <div class="row">
@@ -78,6 +75,7 @@ if (isset($_POST['add_to_cart'])) {
                                 <p class="price">&#8360; <?= $productPrice; ?></p>
                                 <input type="number" name="qty" required min="1" value="1" class="qty" readonly hidden>
                             </div>
+                            <div class="button-group">
                             <?php
                             if (isset($_SESSION['username'])) {
                                 $check_cart = $conn->prepare("SELECT * FROM cart WHERE user_id = ? AND pid = ?");
@@ -88,12 +86,14 @@ if (isset($_POST['add_to_cart'])) {
                                 } else {
                                     echo '<input type="submit" name="add_to_cart" value="Add to Cart" class="btn">';
                                 }
+
                                 echo '<a href="checkout.php?product_id=' . $productId . '" class="btn buy-btn">Buy Now</a>';
                             } else {
                                 echo '<a href="login.php" class="btn">Add to Cart</a>';
                                 echo '<a href="login.php" class="btn buy-btn">Buy Now</a>';
                             }
                             ?>
+                            </div>
                         </form>
             <?php
                     }
