@@ -139,7 +139,7 @@
                     </p>
                     <p><small>Posted on <?php echo htmlentities($row['postingdate']); ?></small></p>
                     <h5><?php echo htmlentities($row['posttitle']); ?></h5>
-                    <a class="btn" href="<?php echo isset($_SESSION['username']) ? 'news-details.php?nid=' . htmlentities($row['pid']) : 'login.php'; ?>">
+                    <a class="btn" href="<?php echo isset($_SESSION['username']) ? 'post-details.php?nid=' . htmlentities($row['pid']) : 'login.php'; ?>">
                         <h5>Read More</h5>
                     </a>
                 </div>
