@@ -1,35 +1,48 @@
 <?php
-session_start(); // Start the session
+session_start();
 include('../includes/config.php');
 
-// Error Reporting for Debugging
+// Error Reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
-    echo "<script>alert('Please log in to view your cart.'); window.location.href='login.php';</script>";
-    exit();
-}
+// Use session ID as user identifier if not logged in
+$user_email = $_SESSION['username'] ?? session_id();
 
-// Database Connection
+// Connect to DB
 try {
     $conn = new PDO("mysql:host=$server;dbname=$database", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    exit();
+    die("Connection failed: " . $e->getMessage());
 }
 
-// Get User Email from Session (not cookies for security)
-$user_email = $_SESSION['username'] ?? null;
+// Handle "Add to Cart" if submitted via POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
+    $product_id = $_POST['product_id'] ?? null;
 
-if (!$user_email) {
-    echo "<script>alert('Your cart is empty! Please add some items.'); window.location='index.php';</script>";
-    exit();
+    if ($product_id && $user_email) {
+        // Check if item already exists in cart
+        $check_cart = $conn->prepare("SELECT * FROM cart WHERE pid = ? AND user_id = ?");
+        $check_cart->execute([$product_id, $user_email]);
+        if ($check_cart->rowCount() > 0) {
+            // Already in cart, just redirect
+            header("Location: cart.php");
+            exit();
+        } else {
+            // Insert into cart
+            $insert_cart = $conn->prepare("INSERT INTO cart (pid, user_id, quantity) VALUES (?, ?, 1)");
+            $insert_cart->execute([$product_id, $user_email]);
+            header("Location: cart.php");
+            exit();
+        }
+    } else {
+        echo "<script>alert('Invalid product or user.'); window.location='index.php';</script>";
+        exit();
+    }
 }
 
-// Fetch Cart Items
+// Fetch cart items
 $select_cart = $conn->prepare("SELECT cart.id AS cart_id, products.id AS product_id, products.name, products.price, products.image, cart.quantity 
                                FROM cart 
                                JOIN products ON cart.pid = products.id 
@@ -37,7 +50,7 @@ $select_cart = $conn->prepare("SELECT cart.id AS cart_id, products.id AS product
 $select_cart->execute([$user_email]);
 $cart_items = $select_cart->fetchAll(PDO::FETCH_ASSOC);
 
-// Calculate total price
+// Calculate total
 $total_price = 0;
 foreach ($cart_items as $item) {
     $total_price += $item['price'] * $item['quantity'];
@@ -53,106 +66,178 @@ foreach ($cart_items as $item) {
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/add.css">
     <style>
-        body {
-            background-color: #ecececdb !important;
-        }
-        .heading {
-            margin-top: 100px;
-            text-align: center;
-        }
-        .cart-container {
-            width: 80%;
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-        }
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .heading {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 32px;
+        color: rgb(248, 189, 51);
+    }
+
+    .cart-container {
+        width: 90%;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background-color: #fefefe;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .cart-item:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .cart-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .cart-item h3 {
+        flex: 1;
+        margin: 0;
+        font-size: 20px;
+        color: #444;
+    }
+
+    .cart-item p {
+        margin: 0 15px;
+        font-size: 16px;
+        color: #555;
+    }
+
+    .btn, .remove-btn {
+        color: #fff !important;
+        background: #3498db !important;
+        padding: 10px 18px;
+        border-radius: 5px;
+        font-size: 15px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+    .btn:hover, .remove-btn:hover {
+        background: #e67e22 !important;
+    }
+
+    .remove-btn {
+        background: #e74c3c !important;
+    }
+
+    .remove-btn:hover {
+        background: #c0392b !important;
+    }
+
+    .total-price {
+        text-align: right;
+        font-size: 22px;
+        margin-top: 30px;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .checkout-btn {
+        text-align: right;
+        margin-top: 25px;
+    }
+
+    .empty-cart {
+        text-align: center;
+        font-size: 20px;
+        color: #888;
+        margin-top: 60px;
+    }
+
+    @media (max-width: 768px) {
         .cart-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #fff;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            align-items: flex-start;
         }
+
         .cart-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
         }
-        .cart-item h3 {
-            flex: 1;
-            margin-left: 20px;
-            font-size: 18px;
+
+        .cart-item h3, .cart-item p {
+            margin: 10px 0;
         }
-        .cart-item p {
-            margin: 0 20px;
-            font-size: 16px;
-        }
-        .btn, .remove-btn {
-            color: #fff !important;
-            background-color: #000 !important;
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background 0.3s ease;
-        }
-        .btn:hover, .remove-btn:hover {
-            background-color: #e56131 !important;
-        }
-        .total-price {
-            text-align: right;
-            font-size: 20px;
-            margin-top: 20px;
-            font-weight: bold;
-        }
+
         .checkout-btn {
-            text-align: right;
-            margin-top: 20px;
-        }
-        .empty-cart {
             text-align: center;
-            font-size: 18px;
-            color: #555;
         }
-    </style>
+
+        .total-price {
+            text-align: center;
+        }
+    }
+</style>
+
 </head>
 <body>
-    <?php include('../includes/header.php'); ?>
-    <h1 class="heading">Shopping Cart</h1>
-    <div class="cart-container">
-        <?php if ($cart_items): ?>
-            <?php foreach ($cart_items as $item): ?>
-                <div class="cart-item">
-    <img src="admin/uploaded_files/<?= htmlentities($item['image']); ?>" alt="<?= htmlentities($item['name']); ?>">
-    <h3><?= htmlentities($item['name']); ?></h3>
-    <p>Price: &#8360; <?= htmlentities($item['price']); ?></p>
-    <p>Quantity: <?= htmlentities($item['quantity']); ?></p>
-    
-    <a href="remove_cart.php?cart_id=<?= $item['cart_id']; ?>" class="remove-btn">Remove</a>
-    </div>
-            <?php endforeach; ?>
-            
-            <div class="total-price">
-                Total Price: &#8360; <?= number_format($total_price, 2); ?>
+<?php include('../includes/header.php'); ?>
+
+<h1 class="heading">Shopping Cart</h1>
+<div class="cart-container">
+    <?php if ($cart_items): ?>
+        <?php foreach ($cart_items as $item): ?>
+            <div class="cart-item">
+                <img src="../admin/uploaded_files/<?= htmlentities($item['image']); ?>" alt="<?= htmlentities($item['name']); ?>">
+                <h3><?= htmlentities($item['name']); ?></h3>
+                <p>Price: &#8360; <?= htmlentities($item['price']); ?></p>
+                <p>Quantity: <?= htmlentities($item['quantity']); ?></p>
+                <a href="remove_cart.php?cart_id=<?= $item['cart_id']; ?>" class="remove-btn">Remove</a>
             </div>
-            <div class="checkout-btn">
-    <?php if (isset($_SESSION['username']) && count($cart_items) > 0): ?>
-        <!-- Pass the user email as 'user_id' parameter to checkout.php -->
-        <a href="checkout.php?user_id=<?= urlencode($user_email); ?>" class="btn">Proceed to Checkout</a>
+        <?php endforeach; ?>
+        <div class="total-price">
+            Total Price: &#8360; <?= number_format($total_price, 2); ?>
+        </div>
+        <div class="checkout-btn">
+            <a href="checkout.php?user_id=<?= urlencode($user_email); ?>" class="btn">Proceed to Checkout</a>
+        </div>
     <?php else: ?>
-        <a href="login.php" class="btn">Log In to Checkout</a>
+        <p class="empty-cart">Your cart is empty.</p>
     <?php endif; ?>
 </div>
 
+<?php include('../includes/footer.php'); ?>
+<script>
+    // Confirm before removing an item from the cart
+    document.addEventListener("DOMContentLoaded", function () {
+        const removeButtons = document.querySelectorAll(".remove-btn");
 
-        <?php else: ?>
-            <p class="empty-cart">Your cart is empty.</p>
-        <?php endif; ?>
-    </div>
-    <?php include('../includes/footer.php'); ?>
+        removeButtons.forEach(function (btn) {
+            btn.addEventListener("click", function (e) {
+                const confirmDelete = confirm("Are you sure you want to remove this item from your cart?");
+                if (!confirmDelete) {
+                    e.preventDefault(); // Stop the link from executing
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
