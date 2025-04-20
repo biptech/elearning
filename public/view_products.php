@@ -1,4 +1,4 @@
-<?php 
+<?php  
 session_start();
 include('../includes/config.php');
 
@@ -18,28 +18,6 @@ if (!isset($_SESSION['username'])) {
     echo "<script>alert('Please log in to shop.'); window.location.href='login.php';</script>";
     exit();
 }
-
-$user_id = $_SESSION['username'];
-
-// Handle Add to Cart
-if (isset($_POST['add_to_cart'])) {
-    $product_id = intval($_POST['product_id']);
-    $quantity = max(1, intval($_POST['qty']));
-
-    $check_cart = $conn->prepare("SELECT * FROM cart WHERE user_id = ? AND pid = ?");
-    $check_cart->execute([$user_id, $product_id]);
-
-    if ($check_cart->rowCount() > 0) {
-        $update_cart = $conn->prepare("UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND pid = ?");
-        $update_cart->execute([$quantity, $user_id, $product_id]);
-    } else {
-        $add_to_cart = $conn->prepare("INSERT INTO cart (user_id, pid, quantity) VALUES (?, ?, ?)");
-        $add_to_cart->execute([$user_id, $product_id, $quantity]);
-    }
-
-    echo "<script>alert('Item added to cart!'); window.location.href='cart.php';</script>";
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -52,8 +30,9 @@ if (isset($_POST['add_to_cart'])) {
 </head>
 <body>
     <?php include('../includes/header.php'); ?>
+    
     <section class="products container">
-        <h1 id="ourcources" style="text-align: center; color: rgb(248, 189, 51);">
+        <h1 id="ourcources">
             <span>SHOP NOW <br> &darr;</span>
         </h1>
         <div class="row">
@@ -62,39 +41,16 @@ if (isset($_POST['add_to_cart'])) {
             if ($select_products->execute()) {
                 if ($select_products->rowCount() > 0) {
                     while ($fetch_product = $select_products->fetch(PDO::FETCH_ASSOC)) {
+                        $productId = htmlentities($fetch_product['id']);
                         $productImage = htmlentities($fetch_product['image'] ?? '');
                         $productName = htmlentities($fetch_product['name'] ?? 'Unknown Product');
                         $productPrice = htmlentities($fetch_product['price'] ?? '0');
-                        $productId = htmlentities($fetch_product['id'] ?? '0');
             ?>
-                        <form action="" method="POST" class="box">
-                            <img src="../admin/uploaded_files/<?= $productImage; ?>" class="image" alt="<?= $productName; ?>">
-                            <h3 class="name"><?= $productName; ?></h3>
-                            <input type="hidden" name="product_id" value="<?= $productId; ?>">
-                            <div class="flex">
-                                <p class="price">&#8360; <?= $productPrice; ?></p>
-                                <input type="number" name="qty" required min="1" value="1" class="qty" readonly hidden>
-                            </div>
-                            <div class="button-group">
-                            <?php
-                            if (isset($_SESSION['username'])) {
-                                $check_cart = $conn->prepare("SELECT * FROM cart WHERE user_id = ? AND pid = ?");
-                                $check_cart->execute([$user_id, $productId]);
-
-                                if ($check_cart->rowCount() > 0) {
-                                    echo '<a href="cart.php" class="btn">Go to Cart</a>';
-                                } else {
-                                    echo '<input type="submit" name="add_to_cart" value="Add to Cart" class="btn">';
-                                }
-
-                                echo '<a href="checkout.php?product_id=' . $productId . '" class="btn buy-btn">Buy Now</a>';
-                            } else {
-                                echo '<a href="login.php" class="btn">Add to Cart</a>';
-                                echo '<a href="login.php" class="btn buy-btn">Buy Now</a>';
-                            }
-                            ?>
-                            </div>
-                        </form>
+            <a href="product_detail.php?id=<?= $productId; ?>" class="box product-link">
+                <img src="../admin/uploaded_files/<?= $productImage; ?>" class="image" alt="<?= $productName; ?>">
+                <h3 class="name"><?= $productName; ?></h3>
+                <p class="price">&#8360; <?= $productPrice; ?></p>
+            </a>
             <?php
                     }
                 } else {
@@ -106,6 +62,7 @@ if (isset($_POST['add_to_cart'])) {
             ?>
         </div>
     </section>
+    
     <?php include('../includes/footer.php'); ?>
 </body>
 </html>

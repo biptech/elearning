@@ -1,120 +1,73 @@
 /* General Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ecececdb;
+  background-color: #f7f7f7;
 }
 
 /* Container for Products */
 .products {
   text-align: center;
-  padding: 50px 20px;
+  padding: 60px 20px;
 }
 
+.products h1 span {
+  font-size: 32px;
+  color: rgb(248, 189, 51);
+  letter-spacing: 1px;
+}
+
+/* Product Grid */
 .row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
+  margin-top: 30px;
 }
 
-/* Product Box */
+/* Product Card */
 .box {
   background-color: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  width: 250px;
+  border-radius: 15px;
+  padding: 20px;
+  width: 260px;
   text-align: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 .box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Product Image */
 .image {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 /* Product Name */
 .name {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 15px 0 8px;
+  color: #222;
 }
 
 /* Price */
 .price {
-  font-size: 20px;
-  color: #e56131;
-  font-weight: bold;
-}
-
-/* Quantity Input */
-.qty {
-  width: 50px;
-  padding: 5px;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  text-align: center;
-  text-decoration: none;
-}
-
-/* Buttons */
-.btn {
-  text-decoration: none;
-  color: #fff;
-  background-color: #000;
-  padding: 10px;
-  border-radius: 5px;
-  transition: background 0.3s ease;
-  text-align: center;
-  display: inline-block;
-  border: none;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #e56131;
-}
-
-/* Buy Now Button */
-.buy-btn {
-  background-color: #4caf50;
-}
-
-.buy-btn:hover {
-  background-color: #45a049;
-}
-
-/* Button Group (New) */
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.button-group .btn {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .box {
-    width: calc(50% - 20px);
-  }
-}
-
-@media (max-width: 480px) {
-  .box {
-    width: 100%;
-  }
+  font-size: 18px;
+  color: #e65100;
+  font-weight: 700;
 }
