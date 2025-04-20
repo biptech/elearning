@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-include('includes/config.php');
+include('../includes/config.php');
 
 // Error Reporting for Debugging
 error_reporting(E_ALL);
@@ -121,7 +121,7 @@ foreach ($cart_items as $item) {
     </style>
 </head>
 <body>
-    <?php include('includes/header.php'); ?>
+    <?php include('../includes/header.php'); ?>
     <h1 class="heading">Shopping Cart</h1>
     <div class="cart-container">
         <?php if ($cart_items): ?>
@@ -153,6 +153,6 @@ foreach ($cart_items as $item) {
             <p class="empty-cart">Your cart is empty.</p>
         <?php endif; ?>
     </div>
-    <?php include('includes/footer.php'); ?>
+    <?php include('../includes/footer.php'); ?>
 </body>
 </html>
