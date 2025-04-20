@@ -52,7 +52,141 @@ if ($result->num_rows > 0) {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Online Education & Learning System | News Details</title>
+    <title>Online Education & Learning System | Post Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+        }
+        .main-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #000;
+        }
+        .post-section {
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        .category-badge { 
+    color: #000;
+    text-decoration: none;
+    background: rgb(248, 189, 51);
+    padding:2px;
+    border-radius: 5px;
+}
+
+        .post-card {
+            background-color: #000;
+            border: 1px solid rgb(248, 189, 51);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .post-title {
+            font-size: 28px;
+            margin: 0;
+        }
+        .post-meta {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+        .post-details-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        .post-image-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .post-text-container {
+            flex: 2;
+        }
+        .comments-container {
+            margin-top: 40px;
+        }
+        .comment-box {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .comment-body {
+            flex-grow: 1;
+        }
+        .comment-author {
+            font-weight: bold;
+        }
+        .comment-date {
+            font-size: 12px;
+            color: #777;
+        }
+        .comment-text {
+            margin-top: 10px;
+        }
+        .comment-form-container {
+            margin-top: 40px;
+            background-color: #111;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .form-heading {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: rgb(248, 189, 51);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .input-field, .textarea-field {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid rgb(248, 189, 51);
+            border-radius: 5px;
+            box-sizing: border-box;
+            background: #000;
+        }
+        .submit-btn {
+            background-color: rgb(248, 189, 51);
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var name = document.Comment.name.value;
+            var email = document.Comment.email.value;
+            var comment = document.Comment.comment.value;
+
+            if (name == "" || email == "" || comment == "") {
+                alert("All fields are required.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <?php include('../includes/header.php');?>
@@ -108,7 +242,7 @@ if ($result->num_rows > 0) {
         <!-- Leave a Comment -->
         <div class="comment-form-container">
             <h5 class="form-heading">Leave a Comment</h5>
-            <form name="Comment" method="post">
+            <form name="Comment" method="post" onsubmit="return validateForm()">
                 <input type="hidden" name="csrftoken" value="<?php echo htmlentities($_SESSION['token']); ?>" />
                 <div class="form-group">
                     <input type="text" name="name" class="input-field" placeholder="Enter your full name" required>
@@ -125,6 +259,6 @@ if ($result->num_rows > 0) {
 
     </div>
 
-    <?php include('includes/footer.php');?>
+    <?php include('../includes/footer.php');?>
 </body>
 </html>
