@@ -2,7 +2,11 @@
 session_start();
 include('../includes/config.php');
 
-// Skip login check as per your request
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    echo "<script> window.location.href='login.php';</script>";
+    exit();
+}
 
 $productId = $_GET['id'] ?? null;
 if (!$productId) {
@@ -23,6 +27,33 @@ try {
     }
 
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Store in session as recently viewed
+if (!isset($_SESSION['viewed_items'])) {
+    $_SESSION['viewed_items'] = [];
+}
+
+// Check if already viewed to prevent duplicates
+$already_viewed = false;
+foreach ($_SESSION['viewed_items'] as $item) {
+    if ($item['id'] == $productId && $item['type'] == 'product') {
+        $already_viewed = true;
+        break;
+    }
+}
+
+if (!$already_viewed) {
+    $_SESSION['viewed_items'][] = [
+        'id' => $productId,
+        'type' => 'product'
+    ];
+
+    // Optional: Limit to last 10 viewed items
+    if (count($_SESSION['viewed_items']) > 10) {
+        array_shift($_SESSION['viewed_items']);
+    }
+}
+
 
     // Check if already in cart
     $user_email = $_SESSION['username'] ?? null;

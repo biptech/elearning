@@ -39,7 +39,9 @@
         </div>
       </div>
     </section>
-    <section class="hero-section">
+    <?php include 'viewed.php'; ?>
+
+    <!-- <section class="hero-section">
       <h2>
         Thousands of students achieved their
         <span class="highlight">dream job</span> at
@@ -66,7 +68,7 @@
         <img src="../images/Samsung_Logo.svg.png" alt="Airtel" />
       </div>
       <p class="more-text">+ many more</p>
-    </section>
+    </section> -->
     <?php include 'search_display.php'; ?>
         <?php include '../includes/footer.php'; ?>
   </body>

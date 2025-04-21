@@ -1,6 +1,25 @@
-<?php  
+<?php   
 session_start();
 include('../includes/config.php');
+
+// Initialize post and product IDs
+$post_id = isset($_GET['nid']) ? intval($_GET['nid']) : 0;
+$product_id = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
+
+// Handle viewed items in session
+if (!isset($_SESSION['viewed_items'])) {
+    $_SESSION['viewed_items'] = []; // Initialize viewed_items session if it doesn't exist
+}
+
+// Avoid adding duplicate entries for posts
+if ($post_id && !in_array($post_id, array_column($_SESSION['viewed_items'], 'id'))) {
+    $_SESSION['viewed_items'][] = ['id' => $post_id, 'type' => 'post'];  
+}
+
+// Avoid adding duplicate entries for products
+if ($product_id && !in_array($product_id, array_column($_SESSION['viewed_items'], 'id'))) {
+    $_SESSION['viewed_items'][] = ['id' => $product_id, 'type' => 'product'];  
+}
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
@@ -8,24 +27,25 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Generating CSRF Token
+// Generating CSRF Token if not already set
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 
+// Handling comment submission
 if (isset($_POST['submit'])) {
     // Verifying CSRF Token
     if (!empty($_POST['csrftoken'])) {
         if (hash_equals($_SESSION['token'], $_POST['csrftoken'])) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $comment = $_POST['comment'];
+            $name = mysqli_real_escape_string($con, $_POST['name']);
+            $email = mysqli_real_escape_string($con, $_POST['email']);
+            $comment = mysqli_real_escape_string($con, $_POST['comment']);
             $postid = intval($_GET['nid']);
             $st1 = '0';
             $query = mysqli_query($con, "INSERT INTO tblcomments(postId, name, email, comment, status) VALUES('$postid', '$name', '$email', '$comment', '$st1')");
             if ($query) {
-                echo "<script>alert('Comment successfully submitted. Comment will be displayed after admin review');</script>";
                 unset($_SESSION['token']);
+                echo "<script>alert('Comment successfully submitted. Comment will be displayed after admin review');</script>";
                 echo "<script>location.href='post-details.php?nid=$postid'</script>";
             } else {
                 echo "<script>alert('Something went wrong. Please try again.');</script>";  
@@ -34,6 +54,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
+// Updating post view counter
 $postid = intval($_GET['nid']);
 $sql = "SELECT viewCounter FROM tblposts WHERE id = '$postid'";
 $result = $con->query($sql);
@@ -44,7 +65,7 @@ if ($result->num_rows > 0) {
         $con->query($sql);
     }
 } else {
-    echo "no results";
+    echo "No results found";
 }
 ?>
 
@@ -70,15 +91,13 @@ if ($result->num_rows > 0) {
             margin-bottom: 40px;
             color: #fff;
         }
-
         .category-badge { 
-    color: #000;
-    text-decoration: none;
-    background: rgb(248, 189, 51);
-    padding:2px;
-    border-radius: 5px;
-}
-
+            color: #000;
+            text-decoration: none;
+            background: rgb(248, 189, 51);
+            padding: 2px;
+            border-radius: 5px;
+        }
         .post-card {
             background-color: #000;
             border: 1px solid rgb(248, 189, 51);
@@ -184,6 +203,13 @@ if ($result->num_rows > 0) {
                 alert("All fields are required.");
                 return false;
             }
+
+            var emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
             return true;
         }
     </script>
@@ -226,7 +252,8 @@ if ($result->num_rows > 0) {
             <?php 
             $sts = 1;
             $query = mysqli_query($con, "SELECT name, comment, postingDate FROM tblcomments WHERE postId = '$pid' AND status = '$sts'");
-            while ($row = mysqli_fetch_array($query)) {
+            if(mysqli_num_rows($query) > 0) {
+                while ($row = mysqli_fetch_array($query)) {
             ?>
             <div class="comment-box">
                 <img class="comment-avatar" src="images/usericon.png" alt="user-icon">
@@ -236,7 +263,12 @@ if ($result->num_rows > 0) {
                     <p class="comment-text"><?php echo htmlentities($row['comment']);?></p>
                 </div>
             </div>
-            <?php } ?>
+            <?php 
+                }
+            } else {
+                echo "<p>No comments yet. Be the first to comment!</p>";
+            }
+            ?>
         </div>
 
         <!-- Leave a Comment -->
