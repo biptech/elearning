@@ -229,7 +229,6 @@ if ($filter == 'all' || $filter == 'product') {
             <form method="GET" action="search.php">
                 <input type="hidden" name="query" value="<?php echo htmlspecialchars($query); ?>">
                 <h3>Filter By:</h3>
-                <label for="filterSelect">Choose Category:</label>
                 <select id="filterSelect" name="filter" class="filter-select" onchange="this.form.submit()">
                     <option value="all" <?php if ($filter == 'all') echo 'selected'; ?>>All</option>
                     <option value="post" <?php if ($filter == 'post') echo 'selected'; ?>>Posts</option>
