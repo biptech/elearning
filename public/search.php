@@ -9,28 +9,37 @@ if ($query == '') {
     exit;
 }
 
-// Sanitize inputs
 $searchQuery = mysqli_real_escape_string($con, $query);
-$filter = mysqli_real_escape_string($con, $filter);
 
-// Prepare results
+// Fetch posts
+$postQuery = "SELECT id, PostTitle AS title, PostDetails AS details, PostImage AS image, 'post' AS type 
+              FROM tblposts 
+              WHERE PostTitle LIKE '%$searchQuery%' OR PostDetails LIKE '%$searchQuery%'";
+
+// Fetch products
+$productQuery = "SELECT id, name AS title, details, image, price, 'product' AS type 
+                 FROM products 
+                 WHERE name LIKE '%$searchQuery%' OR details LIKE '%$searchQuery%'";
+
 $results = [];
 
-if ($filter === 'post' || $filter === 'all') {
-    $postQuery = "SELECT id, PostTitle AS title, PostDetails AS details, PostImage AS image, 'post' AS type 
-                  FROM tblposts 
-                  WHERE PostTitle LIKE '%$searchQuery%' OR PostDetails LIKE '%$searchQuery%'";
+if ($filter == 'all' || $filter == 'post') {
     $postResults = mysqli_query($con, $postQuery);
+    if (!$postResults) {
+        echo "<script>alert('Error fetching posts.'); window.history.back();</script>";
+        exit;
+    }
     while ($row = mysqli_fetch_assoc($postResults)) {
         $results[] = $row;
     }
 }
 
-if ($filter === 'product' || $filter === 'all') {
-    $productQuery = "SELECT id, name AS title, details, image, price, 'product' AS type 
-                     FROM products 
-                     WHERE name LIKE '%$searchQuery%' OR details LIKE '%$searchQuery%'";
+if ($filter == 'all' || $filter == 'product') {
     $productResults = mysqli_query($con, $productQuery);
+    if (!$productResults) {
+        echo "<script>alert('Error fetching products.'); window.history.back();</script>";
+        exit;
+    }
     while ($row = mysqli_fetch_assoc($productResults)) {
         $results[] = $row;
     }
@@ -42,15 +51,22 @@ if ($filter === 'product' || $filter === 'all') {
 <head>
     <meta charset="UTF-8">
     <title>Search Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             background-color: #000;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            padding: 20px;
         }
 
         .search-text {
             text-align: center;
-            padding-top: 40px;
+            padding-top: 20px;
             color: #fff;
         }
 
@@ -58,22 +74,61 @@ if ($filter === 'product' || $filter === 'all') {
             color: rgb(248, 189, 51);
         }
 
-        .filter-container {
-            text-align: center;
-            margin: 20px 0;
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            padding: 20px;
         }
 
-        .filter-container select {
-            padding: 8px 12px;
+        .filter-sidebar {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 200px;
+            height: fit-content;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .filter-sidebar h3 {
+            margin-bottom: 15px;
+            color: rgb(248, 189, 51);
+        }
+
+        .filter-sidebar label {
+            display: block;
+            margin-bottom: 10px;
             font-size: 16px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background-color: #f8bd33;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .filter-btn:hover {
+            background-color: #e6a700;
         }
 
         .search-results {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
             gap: 20px;
-            padding: 40px 20px;
+            width: 100%;
         }
 
         .card-link {
@@ -85,7 +140,6 @@ if ($filter === 'product' || $filter === 'all') {
             background-color: #111;
             border-radius: 10px;
             padding: 15px;
-            width: 250px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
@@ -96,21 +150,30 @@ if ($filter === 'product' || $filter === 'all') {
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
 
-        .card img {
+        .horizontal-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
             width: 100%;
-            height: auto;
+            max-width: 800px;
+        }
+
+        .card-image {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
             border-radius: 10px;
+            flex-shrink: 0;
         }
 
         .card-body {
-            padding: 15px 0;
+            padding: 0;
+            color: #fff;
         }
 
-        .card h3 {
+        .card-body h3 {
             font-size: 18px;
-            font-weight: bold;
             margin-bottom: 10px;
-            color: #fff;
         }
 
         .price {
@@ -123,67 +186,89 @@ if ($filter === 'product' || $filter === 'all') {
             text-align: center;
             color: #fff;
             padding: 50px;
+            width: 100%;
         }
 
         .no-results a {
             color: #f8bd33;
         }
 
-        @media (max-width: 600px) {
-            .card {
-                width: 90%;
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .horizontal-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-image {
+                width: 100%;
+                height: auto;
             }
         }
     </style>
 </head>
-<body>
 
+<body>
 <?php include '../includes/header.php'; ?>
 
-<div class="secontainer container">
+<div class="main-container">
     <h2 class="search-text">Search Results for "<span><?php echo htmlspecialchars($query); ?></span>"</h2>
 
-    <!-- Filter Dropdown -->
-    <div class="filter-container">
-        <form method="GET" action="search.php">
-            <input type="hidden" name="query" value="<?php echo htmlspecialchars($query); ?>">
-            <select name="filter" onchange="this.form.submit()">
-                <option value="all" <?php if ($filter == 'all') echo 'selected'; ?>>All</option>
-                <option value="post" <?php if ($filter == 'post') echo 'selected'; ?>>Posts</option>
-                <option value="product" <?php if ($filter == 'product') echo 'selected'; ?>>Products</option>
-            </select>
-        </form>
-    </div>
+    <div class="content-wrapper">
+        <!-- Filter Sidebar -->
+        <div class="filter-sidebar">
+            <form method="GET" action="search.php">
+                <input type="hidden" name="query" value="<?php echo htmlspecialchars($query); ?>">
+                <h3>Filter By:</h3>
+                <label for="filterSelect">Choose Category:</label>
+                <select id="filterSelect" name="filter" class="filter-select" onchange="this.form.submit()">
+                    <option value="all" <?php if ($filter == 'all') echo 'selected'; ?>>All</option>
+                    <option value="post" <?php if ($filter == 'post') echo 'selected'; ?>>Posts</option>
+                    <option value="product" <?php if ($filter == 'product') echo 'selected'; ?>>Products</option>
+                </select>
+            </form>
+        </div>
 
-    <div class="search-results">
-        <?php if (count($results) > 0) { ?>
-            <?php foreach ($results as $row) { 
-                $link = ($row['type'] == 'post') 
+        <!-- Search Results -->
+        <div class="search-results">
+            <?php if (count($results) > 0) { ?>
+                <?php foreach ($results as $row) {
+                    $link = ($row['type'] == 'post') 
                         ? "post-details.php?nid=" . $row['id'] 
-                        : "product_detail.php?product_id=" . $row['id'];
+                        : "product_detail.php?id=" . $row['id'];
 
-                $imagePath = ($row['type'] == 'post') 
-                             ? "../admin/postimages/" . $row['image'] 
-                             : "../admin/uploaded_files/" . $row['image'];
-            ?>
-                <a href="<?php echo $link; ?>" class="card-link">
-                    <div class="card">
-                        <img src="<?php echo $imagePath; ?>" onerror="this.src='../images/default.jpg';" alt="<?php echo htmlspecialchars($row['title']); ?>">
-                        <div class="card-body">
-                            <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-                            <?php if ($row['type'] != 'post') { ?>
-                                <p class="price">Rs <?php echo htmlspecialchars($row['price']); ?></p>
-                            <?php } ?>
+                    $imagePath = ($row['type'] == 'post') 
+                        ? "../admin/postimages/" . $row['image'] 
+                        : "../admin/uploaded_files/" . $row['image'];
+                ?>
+                    <a href="<?php echo $link; ?>" class="card-link">
+                        <div class="card horizontal-card">
+                            <img class="card-image" src="<?php echo $imagePath; ?>" onerror="this.src='../images/default.jpg';" alt="<?php echo htmlspecialchars($row['title']); ?>">
+                            <div class="card-body">
+                                <h3><?php echo htmlspecialchars($row['title']); ?></h3>
+                                <?php if ($row['type'] == 'product') { ?>
+                                    <p class="price">Rs <?php echo htmlspecialchars($row['price']); ?></p>
+                                <?php } ?>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                <?php } ?>
+            <?php } else { ?>
+                <div class="no-results">
+                    <h4>No results found for "<?php echo htmlspecialchars($query); ?>"</h4>
+                    <a href="index.php">Back to Home</a>
+                </div>
             <?php } ?>
-        <?php } else { ?>
-            <div class="no-results">
-                <h4>No results found for "<?php echo htmlspecialchars($query); ?>"</h4>
-                <a href="index.php">Back to Home</a>
-            </div>
-        <?php } ?>
+        </div>
     </div>
 </div>
 
