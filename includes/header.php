@@ -63,7 +63,7 @@ if (isset($_SESSION['username'])) {
                         <a href="#" id="profileDropdownMenu"><i class="fa fa-user-circle-o"></i> <?php echo $firstName; ?></a>
                         <div class="dropdown-content" id="profileDropdown">
                             <a href="user-profile.php?u_id=<?php echo $u_id; ?>"><i class="fa fa-user"></i> Profile</a>
-                            <a href="log-out.php" onclick="return confirm('Are you sure to log out?')"><i class="fa fa-sign-out"></i> LOG OUT</a>
+                            <a href="logout.php" onclick="return confirm('Are you sure to log out?')"><i class="fa fa-sign-out"></i> LOG OUT</a>
                         </div>
                     </div>
                 <?php } else { ?>
