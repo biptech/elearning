@@ -5,8 +5,9 @@ $items = [];
 
 if (!empty($_SESSION['viewed_items'])) {
     $unique = [];
+    $count = 0;
 
-    foreach ($_SESSION['viewed_items'] as $viewed) {
+    foreach (array_reverse($_SESSION['viewed_items']) as $viewed) {
         $id = isset($viewed['id']) ? (int)$viewed['id'] : 0;
         $type = $viewed['type'] ?? '';
 
@@ -14,7 +15,6 @@ if (!empty($_SESSION['viewed_items'])) {
             continue;
         }
 
-        // Prevent duplicate IDs by type
         $key = $type . '_' . $id;
         if (isset($unique[$key])) continue;
         $unique[$key] = true;
@@ -31,6 +31,11 @@ if (!empty($_SESSION['viewed_items'])) {
 
         if ($res && $data = mysqli_fetch_assoc($res)) {
             $items[] = $data;
+            $count++;
+        }
+
+        if ($count >= 10) {
+            break;
         }
     }
 }
@@ -54,7 +59,7 @@ if (!empty($_SESSION['viewed_items'])) {
             text-align: center;
             padding: 20px 10px 10px;
             font-size: 26px;
-            color: rgb(248, 189, 51);
+            color: #f4f4f4;
         }
 
         .carousel-container {
@@ -132,6 +137,7 @@ if (!empty($_SESSION['viewed_items'])) {
 <body>
 
 <h2>👀 Recently Viewed Items</h2>
+
 <div class="carousel-container">
     <?php if (!empty($items)): ?>
         <?php foreach ($items as $item): 
@@ -153,8 +159,8 @@ if (!empty($_SESSION['viewed_items'])) {
                 <div class="carousel-item">
                     <img src="<?php echo $imagePath; ?>" onerror="this.src='../images/default.jpg';" alt="Item Image">
                     <h4 title="<?php echo htmlspecialchars($item['title']); ?>" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-    <?php echo htmlspecialchars($item['title']); ?>
-</h4>
+                        <?php echo htmlspecialchars($item['title']); ?>
+                    </h4>
                     <?php if ($item['type'] == 'post'): ?>
                         <p><?php echo htmlspecialchars($description); ?></p>
                     <?php elseif ($item['type'] == 'product' && isset($item['price'])): ?>

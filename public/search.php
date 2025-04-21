@@ -11,6 +11,10 @@ if ($query == '') {
 
 $searchQuery = mysqli_real_escape_string($con, $query);
 
+// Log the search keyword
+$logKeyword = mysqli_real_escape_string($con, $query);
+mysqli_query($con, "INSERT INTO search_log (keyword) VALUES ('$logKeyword')");
+
 // Fetch posts
 $postQuery = "SELECT id, PostTitle AS title, PostDetails AS details, PostImage AS image, 'post' AS type 
               FROM tblposts 
