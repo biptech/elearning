@@ -39,36 +39,10 @@
         </div>
       </div>
     </section>
+    <?php include 'view_logos.php';?>
+
     <?php include 'viewed.php'; ?>
 
-    <!-- <section class="hero-section">
-      <h2>
-        Thousands of students achieved their
-        <span class="highlight">dream job</span> at
-      </h2>
-
-      <div class="logo-grid">
-        <img src="../images/Samsung_Logo.svg.png" alt="Amazon" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Google" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Microsoft" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Goldman Sachs" />
-        <img src="../images/Samsung_Logo.svg.png" alt="PayPal" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Samsung" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Salesforce" />
-        <img src="../images/Samsung_Logo.svg.png" alt="NetApp" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Hitachi" />
-        <img src="../images/Samsung_Logo.svg.png" alt="JPMorgan" />
-        <img src="../images/Samsung_Logo.svg.png" alt="IBM" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Dell" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Deloitte" />
-        <img src="../images/Samsung_Logo.svg.png" alt="KPMG" />
-        <img src="../images/Samsung_Logo.svg.png" alt="ISRO" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Mercedes-Benz" />
-        <img src="../images/Samsung_Logo.svg.png" alt="EY" />
-        <img src="../images/Samsung_Logo.svg.png" alt="Airtel" />
-      </div>
-      <p class="more-text">+ many more</p>
-    </section> -->
     <?php include 'search_display.php'; ?>
         <?php include '../includes/footer.php'; ?>
   </body>

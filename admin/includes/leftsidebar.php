@@ -71,13 +71,12 @@
             </ul>
         </li>
 
-        <!-- <li class="custom-menu-item has-submenu">
-            <a href="#" class="custom-menu-link"><i class="ti ti-layout-list-thumb"></i> Sub Category <span class="custom-menu-arrow">▼</span></a>
+        <li class="custom-menu-item has-submenu">
+            <a href="#" class="custom-menu-link"><i class="ti ti-layout-list-thumb"></i> Logo <span class="custom-menu-arrow">▼</span></a>
             <ul class="custom-submenu">
-                <li><a href="add-subcategory.php" class="custom-submenu-link">Add Sub Category</a></li>
-                <li><a href="manage-subcategories.php" class="custom-submenu-link">Manage Sub Category</a></li>
+                <li><a href="upload-logo.php" class="custom-submenu-link">Add Logo</a></li>
             </ul>
-        </li> -->
+       </li>
 
         <li class="custom-menu-item has-submenu">
             <a href="#" class="custom-menu-link"><i class="mdi mdi-newspaper"></i> Posts <span class="custom-menu-arrow">▼</span></a>
