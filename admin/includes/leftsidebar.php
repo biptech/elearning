@@ -1,41 +1,52 @@
 <style>
-
     .custom-sidebar-container {
         width: 250px;
-        background: #222d32;
-        color: #b8c7ce;
+        background: #1f2a36;
+        color: #e0e0e0;
         height: 100vh;
-        padding: 20px 0;
         position: fixed;
+        top: 70px;
         left: 0;
-        top: 70px; /* Match header height */
         overflow-y: auto;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        z-index: 100;
     }
+
     .custom-menu-list {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
 
     .custom-menu-item {
-        margin: 0;
+        transition: background 0.2s ease;
     }
 
     .custom-menu-link {
         display: block;
-        padding: 12px 20px;
-        color: #b8c7ce;
+        padding: 14px 20px;
+        color: #e0e0e0;
         text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .custom-menu-link i {
+        margin-right: 10px;
     }
 
     .custom-menu-link:hover {
-        background: #1e282c;
-        color: #fff;
+        background: #263544;
+        color: #ffffff;
     }
 
     .custom-submenu {
         list-style: none;
         padding-left: 20px;
         display: none;
+        background: #1b252f;
     }
 
     .has-submenu:hover .custom-submenu {
@@ -43,21 +54,35 @@
     }
 
     .custom-submenu-link {
-        padding: 8px 20px;
         display: block;
+        padding: 10px 25px;
         color: #b8c7ce;
         text-decoration: none;
+        font-size: 14px;
+        transition: background 0.2s ease;
     }
 
     .custom-submenu-link:hover {
+        background: #2c3b4a;
         color: #fff;
-        background-color: #1a2226;
     }
 
     .custom-menu-arrow {
         float: right;
+        font-size: 12px;
+        opacity: 0.6;
+    }
+
+    /* Optional scrollbar styling for long sidebar content */
+    .custom-sidebar-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-sidebar-container::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
     }
 </style>
+
 
 <div class="custom-sidebar-container">
     <ul class="custom-menu-list">

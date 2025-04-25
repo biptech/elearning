@@ -11,13 +11,10 @@ $row = mysqli_fetch_assoc($result);
     <title>Online Education & Learning System</title>
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.png">
     <style>
-
         body.custom-body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f4f6f9;
-    
-
         }
 
         .custom-wrapper {
@@ -28,11 +25,13 @@ $row = mysqli_fetch_assoc($result);
         .custom-topbar {
             position: fixed;
             width: 100%;
+            height: 70px;
             background: #3c8dbc;
             color: #fff;
             display: flex;
             justify-content: space-between;
-            z-index: 99999;
+            z-index: 9999;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .custom-logo-img {
@@ -41,26 +40,29 @@ $row = mysqli_fetch_assoc($result);
 
         .custom-navbar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
+            padding-right: 20px;
         }
 
         .custom-user-img {
             width: 40px;
+            height: 40px;
             border-radius: 50%;
+            object-fit: cover;
         }
-.custom-welcome-text{
-    color: black;
-}
+
         .custom-user-dropdown {
             list-style: none;
             padding: 10px;
             background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: absolute;
             top: 60px;
             right: 10px;
             display: none;
+            width: 180px;
+            border-radius: 8px;
         }
 
         .custom-user-box:hover .custom-user-dropdown {
@@ -72,10 +74,19 @@ $row = mysqli_fetch_assoc($result);
             padding: 8px 12px;
             color: #333;
             text-decoration: none;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
         }
 
         .custom-dropdown-link:hover {
             background: #f0f0f0;
+        }
+
+        .custom-welcome-text {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
         }
 
         .custom-menu-button {
@@ -84,41 +95,60 @@ $row = mysqli_fetch_assoc($result);
             color: white;
             font-size: 20px;
         }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .topbar-left a {
+            text-decoration: none;
+        }
+
+        /* Optional: Add some animations for dropdown */
+        .custom-user-dropdown {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    function checkAvailability() {
-        $("#loaderIcon").show();
-        jQuery.ajax({
-            url: "check_availability.php",
-            data: 'username=' + $("#sadminusername").val(),
-            type: "POST",
-            success: function(data) {
-                $("#user-availability-status").html(data);
-                $("#loaderIcon").hide();
-            },
-            error: function() {}
-        });
-    }
+        function checkAvailability() {
+            $("#loaderIcon").show();
+            jQuery.ajax({
+                url: "check_availability.php",
+                data: 'username=' + $("#sadminusername").val(),
+                type: "POST",
+                success: function(data) {
+                    $("#user-availability-status").html(data);
+                    $("#loaderIcon").hide();
+                },
+                error: function() {}
+            });
+        }
     </script>
 </head>
 <body class="custom-body">
 <div id="wrapper" class="custom-wrapper">
     <div class="topbar custom-topbar">
-        <div class="topbar-left custom-topbar-left">
-            <a href="index.php" class="logo custom-logo">
+        <div class="topbar-left">
+            <a href="index.php" class="logo">
                 <img src="../images/logo.png" alt="Logo" class="custom-logo-img">
             </a>
         </div>
         <div class="navbar custom-navbar">
-            <!-- <ul class="nav navbar-nav navbar-left custom-navbar-left">
-                <li>
-                    <button class="button-menu-mobile custom-menu-button">
-                        ☰
-                    </button>
-                </li>
-            </ul> -->
-            <ul class="nav navbar-nav navbar-right custom-navbar-right">
+            <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown user-box custom-user-box">
                     <a href="#" class="dropdown-toggle user-link custom-user-link">
                         <img src="assets/images/users/avatar-1.jpg" alt="User" class="img-circle user-img custom-user-img">
