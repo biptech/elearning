@@ -3,146 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
     <title>Edit Profile</title>
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <style>
-        /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #000;
-}
+ 
+        .heading {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #111;
+            color: white;
+        }
 
-/* Heading */
-.heading {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    padding: 15px;
-    color: white;
-    margin: 20px;
-}
+        .name{
+            color: rgb(248, 189, 51);
+        }
+        .edit-profile-container {
+            max-width: 400px;
+            background: #111;
+            color: white;
+            padding: 25px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
 
-/* Edit Profile Container */
-.edit-profile-container {
-    max-width: 400px;
-    background: #111;
-    color: white;
-    padding: 25px;
-    margin-bottom: 20px;
-    margin: auto auto 20px auto;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-   
+        .profile-edit-container {
+            display: flex;
+            flex-direction: column;
+        }
 
-}
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
 
-/* Form Fields */
-.profile-edit-container {
-    max-width: auto;
-    display: flex;
-    flex-direction: column;
-    align-item:center;
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-}
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
 
-label {
-    font-weight: bold;
-    margin-top: 10px;
-}
+        .error {
+            color: red;
+            font-size: 12px;
+            height: 15px;
+        }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
+        .saveorcancel {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 20px;
+        }
 
-input:focus, select:focus {
-    outline: none;
-    border-color: #007bff;
-}
+        button, .cancel-btn a {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-/* Error Messages */
-.error {
-    color: red;
-    font-size: 12px;
-    height: 15px;
-}
+        .save-btn button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
 
-/* Save and Cancel Buttons */
-.saveorcancel {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    align-items: center;
-    gap: 20px;
-}
+        .save-btn button:hover {
+            background-color: #218838;
+        }
 
-button, .cancel-btn a {
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-}
+        .cancel-btn a {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
 
-.save-btn button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-}
+        .cancel-btn a:hover {
+            background-color: #c82333;
+        }
 
-.save-btn button:hover {
-    background-color: #218838;
-}
+        @media (max-width: 600px) {
+            .edit-profile-container {
+                width: 90%;
+                padding: 20px;
+            }
 
-.cancel-btn a {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-}
-
-.cancel-btn a:hover {
-    background-color: #c82333;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    .edit-profile-container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .saveorcancel {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
+            .saveorcancel {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
     </style>
 </head>
-<?php include '../includes/header.php'; ?>
 <body>
-    <?php
-        $u_id = $_GET['u_id'];
-        $qry = "SELECT * FROM user_signup WHERE u_id = '$u_id'";
-        include '../includes/config.php';
-        $result = mysqli_query($con, $qry);
-        $row = mysqli_fetch_assoc($result);
 
-        // Handle form submission
-        if(isset($_POST['submit'])) {
-            $u_name = mysqli_real_escape_string($con, $_POST['u_name']);
-            $u_address = mysqli_real_escape_string($con, $_POST['u_address']);
-            $u_email = mysqli_real_escape_string($con, $_POST['u_email']);
-            $u_phone = mysqli_real_escape_string($con, $_POST['u_phone']);
-            $u_gender = mysqli_real_escape_string($con, $_POST['u_gender']);
-            $u_password = mysqli_real_escape_string($con, $_POST['u_password']);
+<?php
+    include '../includes/config.php';
+    $u_id = $_GET['u_id'];
+    $qry = "SELECT * FROM user_signup WHERE u_id = '$u_id'";
+    $result = mysqli_query($con, $qry);
+    $row = mysqli_fetch_assoc($result);
+
+    if (isset($_POST['submit'])) {
+        $u_name = mysqli_real_escape_string($con, $_POST['u_name']);
+        $u_address = mysqli_real_escape_string($con, $_POST['u_address']);
+        $u_email = mysqli_real_escape_string($con, $_POST['u_email']);
+        $u_phone = mysqli_real_escape_string($con, $_POST['u_phone']);
+        $u_gender = mysqli_real_escape_string($con, $_POST['u_gender']);
+        $old_password = $_POST['old_password'];
+
+        if (!password_verify($old_password, $row['u_password'])) {
+            echo '<script>alert("Incorrect current password.");</script>';
+        } else {
+            $raw_password = $_POST['u_password'];
+            $u_password = !empty($raw_password) ? password_hash($raw_password, PASSWORD_DEFAULT) : $row['u_password'];
+
+            $image = $_FILES['u_image']['name'];
+            $temp_name = $_FILES['u_image']['tmp_name'];
+            $updateImage = "";
+
+            if (!empty($image)) {
+                // If the user uploads a new image
+                $folder = "../uploads/images/" . $image;
+                move_uploaded_file($temp_name, $folder);
+                $updateImage = ", u_image = '$image'";
+            }
 
             $qry2 = "UPDATE user_signup SET
                         u_name = '$u_name', 
@@ -150,70 +146,94 @@ button, .cancel-btn a {
                         u_email = '$u_email', 
                         u_phone = '$u_phone',
                         u_gender = '$u_gender',
-                        u_password = '$u_password' 
+                        u_password = '$u_password'
+                        $updateImage
                     WHERE u_id = '$u_id'";
 
-            if(mysqli_query($con, $qry2)) {
-                echo '<script type="text/javascript"> alert("Profile Updated Successfully"); window.location.assign("user-profile.php?u_id=' . $u_id . '");</script>';
+            if (mysqli_query($con, $qry2)) {
+                echo '<script>alert("Profile Updated Successfully"); window.location.href = "user-profile.php?u_id=' . $u_id . '";</script>';
                 exit();
             } else {
-                echo '<script type="text/javascript"> alert("Something Went Wrong!") </script>';
+                echo '<script>alert("Something went wrong.");</script>';
             }
         }
-    ?> 
+    }
 
-    <!--About-->
-    <section class="edit-profile" id="edit-profile">
-        <div class="heading">
-            <span>Edit <?php echo $row['u_name'];?> Profile</span>
-        </div>  
-        <div class="edit-profile-container">
-            <form action="" class="profile-detail" method="POST" onsubmit="return validateForm()">
-                <div class="profile-edit-container">
-                    <label for="u_name">Name:</label>
-                    <span id="error_u_name" class="error"></span>
-                    <input type="text" name="u_name" id="u_name" placeholder="Full Name" value="<?php echo $row['u_name'];?>" oninput="validateName()" onblur="validateName()"><br>
+    // Handle profile image removal
+    if (isset($_POST['remove_image'])) {
+        // Get the current profile image from the database
+        $current_image = $row['u_image'];
+        if (!empty($current_image)) {
+            $image_path = '../uploads/images/' . $current_image;
+            // Delete the image from the server
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+            // Update the database to set the profile image to NULL
+            $qry_remove_image = "UPDATE user_signup SET u_image = NULL WHERE u_id = '$u_id'";
+            mysqli_query($con, $qry_remove_image);
+            echo '<script>window.location.href = "edit-user-profile.php?u_id=' . $u_id . '";</script>';
+            exit();
+        }
+    }
+?> 
 
-                    <label for="u_address">Address:</label>
-                    <span id="error_u_address" class="error"></span>
-                    <input type="text" name="u_address" id="u_address" placeholder="Address" value="<?php echo $row['u_address'];?>" oninput="validateAddress()" onblur="validateAddress()"><br>
+<?php include '../includes/header.php'; ?>
 
-                    <label for="u_email">Email:</label>
-                    <span id="error_u_email" class="error"></span>
-                    <input type="email" name="u_email" id="u_email" placeholder="Email" value="<?php echo $row['u_email'];?>" oninput="validateEmail()" onblur="validateEmail()"><br>
+<section class="edit-profile" id="edit-profile">
+    <div class="edit-profile-container">
+    <div class="heading">
+    <p>Edit <span class = "name"> <?php echo $row['u_name'];?></span> Profile </p>
+    </div>  
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="profile-edit-container">
+                <label for="u_name">Name:</label>
+                <input type="text" name="u_name" id="u_name" value="<?php echo $row['u_name']; ?>" required>
 
-                    <label for="u_phone">Phone:</label>
-                    <span id="error_u_phone" class="error"></span>
-                    <input name="u_phone" id="u_phone" placeholder="Phone" value="<?php echo $row['u_phone'];?>" oninput="validatePhone()" onblur="validatePhone()"><br>
+                <label for="u_address">Address:</label>
+                <input type="text" name="u_address" id="u_address" value="<?php echo $row['u_address']; ?>" required>
 
-                    <label for="u_gender">Gender:</label>
-                    <span id="error_u_gender" class="error"></span>
-                    <select name="u_gender" id="u_gender" onchange="validateGender()" onblur="validateGender()">
-                        <option value="Male" <?php if ($row['u_gender'] == 'Male') echo 'selected'; ?>>Male</option>
-                        <option value="Female" <?php if ($row['u_gender'] == 'Female') echo 'selected'; ?>>Female</option>
-                        <option value="Other" <?php if ($row['u_gender'] == 'Other') echo 'selected'; ?>>Other</option>
-                    </select><br>
+                <label for="u_email">Email:</label>
+                <input type="email" name="u_email" id="u_email" value="<?php echo $row['u_email']; ?>" required>
 
-                    <label for="u_password">Password:</label>
-                    <span id="error_u_password" class="error"></span>
-                    <input style="width: 100%;" type="password" name="u_password" id="u_password" placeholder="New Password" value="<?php echo $row['u_password'];?>" oninput="validatePassword()" onblur="validatePassword()"><br>
+                <label for="u_phone">Phone:</label>
+                <input type="text" name="u_phone" id="u_phone" value="<?php echo $row['u_phone']; ?>" required>
 
-                    <div class="saveorcancel">
-                        <div class="save-btn">
-                            <button type="submit" name="submit" id="savebtn">
-                                <i class="fa-solid fa-check"></i>
-                                Save
-                            </button>
-                        </div>
-                        <div class="cancel-btn">
-                            <a href="user-profile.php?u_id=<?php echo $row['u_id']; ?>"><i class="fa-solid fa-xmark"></i> Cancel</a>
-                        </div>
+                <label for="u_gender">Gender:</label>
+                <select name="u_gender" id="u_gender">
+                    <option value="Male" <?php if ($row['u_gender'] == 'Male') echo 'selected'; ?>>Male</option>
+                    <option value="Female" <?php if ($row['u_gender'] == 'Female') echo 'selected'; ?>>Female</option>
+                    <option value="Other" <?php if ($row['u_gender'] == 'Other') echo 'selected'; ?>>Other</option>
+                </select>
+
+                <label for="u_image">Change Profile Picture:</label>
+                <?php if (!empty($row['u_image'])): ?>
+                    <div>
+                        <img src="../uploads/images/<?php echo $row['u_image']; ?>" alt="Profile Image" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                        <button type="submit" name="remove_image" style="background-color: red; color: white; border: none; padding: 5px 10px; margin-top: 10px;">Remove Image</button>
+                    </div>
+                <?php endif; ?>
+                <input type="file" name="u_image" id="u_image" accept="image/*">
+                <label for="old_password">Current Password:</label>
+                <input type="password" name="old_password" id="old_password" required>
+
+                <label for="u_password">New Password:</label>
+                <input type="password" name="u_password" id="u_password" placeholder="Leave empty to keep current password">           
+
+                <div class="saveorcancel">
+                    <div class="save-btn">
+                        <button type="submit" name="submit"><i class="fa-solid fa-check"></i> Save</button>
+                    </div>
+                    <div class="cancel-btn">
+                        <a href="user-profile.php?u_id=<?php echo $row['u_id']; ?>"><i class="fa-solid fa-xmark"></i> Cancel</a>
                     </div>
                 </div>
-            </form>
-        </div> 
-    </section>
-    <script src="../js/validation.js"></script>
-    <?php include '../includes/footer.php'; ?>
+            </div>
+        </form>
+    </div> 
+</section>
+
+<?php include '../includes/footer.php'; ?>
+
 </body>
 </html>

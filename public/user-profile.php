@@ -6,14 +6,6 @@
     <title>Profile</title>
     <style>
 
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    color: #fff;
-}
-
 .profile {
     max-width: 400px;
     margin: 50px auto;
@@ -40,10 +32,24 @@ body {
 }
 
 .profile-img img {
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%;  
+    object-fit: cover; 
+    border: 4px solid #ffc107;
+}
+
+.profile-letter {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    object-fit: cover;
+    background-color: #ffc107;
+    color: #000;
+    font-size: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
     border: 4px solid #ffc107;
 }
 
@@ -53,12 +59,12 @@ body {
     background: #fff;
     color: #000;
     padding: 10px;
+    margin-bottom: 10px;
     border-radius: 5px;
     width: 100%;
     max-width: 500px;
     text-align: left;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 20px;
 }
 
 .about-text p b {
@@ -81,7 +87,6 @@ body {
     background-color: #e0a800;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .profile {
         width: 90%;
@@ -113,21 +118,29 @@ body {
             <!-- <h1><?php echo $row['u_name'];?></h1> -->
         </div>  
         <div class="profile-container">
-            <div class="profile-img">
-                <img src="images\<?php echo $row['u_image'];?>" alt="">
-            </div>
-            <div class="about-text">
+        <div class="profile-img">
+    <?php if (!empty($row['u_image']) && file_exists("../uploads/images/" . $row['u_image'])): ?>
+        <img src="../uploads/images/<?php echo $row['u_image']; ?>" alt="Profile Image">
+    <?php else: ?>
+        <div class="profile-letter">
+            <?php echo strtoupper(substr($row['u_name'], 0, 1)); ?>
+        </div>
+    <?php endif; ?>
+</div>
 
-            <p><b>Name:</b>&nbsp;<?php echo $row['u_name'];?></p>
+            <div class="about-text">
+                <!-- <span>About Us</span> -->
+                <p><b>Name:</b>&nbsp;<?php echo $row['u_name'];?></p>
                 <p><b>Address:</b>&nbsp;<?php echo $row['u_address'];?></p>
                 <p><b>Email:</b>&nbsp;<?php echo $row['u_email'];?></p>
                 <p><b>Phone:</b>&nbsp;<?php echo $row['u_phone'];?></p>
                 <p><b>Gender:</b>&nbsp;<?php echo $row['u_gender'];?></p>
-                <p><b>Password:</b>&nbsp;</p>
+                <p><b>Password:</b>&nbsp;******</p>
                 <a href="edit-user-profile.php?u_id=<?php echo $row['u_id'];?>" class="btn"><i class="fa-solid fa-pen"></i> Edit</a>
             </div>
-        </div>
+        </div> 
     </section>
+    <script src="../js/valid.js"></script>
     <?php include '../includes/footer.php'; ?>
 </body>
 </html>
