@@ -11,7 +11,7 @@
     margin: 30px 0;
 }
 
-.highlight {-
+.highlight {
     color: orange;
 }
 
@@ -23,7 +23,7 @@
     padding: 20px;
 }
 
-.logo {
+.company-logo {
     width: 200px;
     height: auto;
     object-fit: contain;
@@ -33,7 +33,7 @@
     transition: transform 0.3s;
 }
 
-.logo:hover {
+.company-logo:hover {
     transform: scale(1.1);
 }
 
@@ -46,7 +46,7 @@
         <?php
 $result = $con->query("SELECT * FROM company_logos ORDER BY uploaded_at DESC");
 while ($row = $result->fetch_assoc()) {
-    echo "<img src='../admin/{$row['logo_path']}' alt='Company Logo' class='logo'>";
+    echo "<img src='../admin/{$row['logo_path']}' alt='Company Logo' class='company-logo'>";
 }
         ?>
     </div>
