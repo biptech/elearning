@@ -10,7 +10,7 @@ function validateForm() {
   // Validate Full Name
   var u_name = document.getElementById("u_name").value.trim();
   var nameRegex =
-    /^(?:(?:Dr|Er|Mr|Mrs|Ms|Rev|PhD|MD)\.\s)?[A-Z][a-z]{2,}(?:\s[A-Z][a-z]{2,})+$/;
+    /^(?:(?:Dr|Er|Mr|Mrs|Ms|Rev|PhD|MD)\.\s)?[A-Z][a-zA-Z'’-]{1,}(?:\s[A-Z][a-zA-Z'’-]{1,})+$/;
 
   if (u_name === "") {
     document.getElementById("error_u_name").textContent =
@@ -18,10 +18,10 @@ function validateForm() {
     isValid = false;
   } else if (!nameRegex.test(u_name)) {
     document.getElementById("error_u_name").textContent =
-      "Please enter a valid full name one dot allowed.";
+      "Please enter a valid full name (e.g., Mr. Bipin Chapai).";
     isValid = false;
   } else {
-    document.getElementById("error_u_name").textContent = ""; // Clear error if valid
+    document.getElementById("error_u_name").textContent = "";
   }
 
   // Validate Address
@@ -131,14 +131,15 @@ function validateName() {
   var u_name = document.getElementById("u_name").value.trim();
   var errorElement = document.getElementById("error_u_name");
   errorElement.textContent = "";
+
+  var nameRegex =
+    /^(?:(?:Dr|Er|Mr|Mrs|Ms|Rev|PhD|MD)\.\s)?[A-Z][a-zA-Z'’-]{1,}(?:\s[A-Z][a-zA-Z'’-]{1,})+$/;
+
   if (u_name === "") {
     errorElement.textContent = "Please enter your full name.";
-  } else if (
-    !/^(?:(?:Dr\.|Er\.|Mr\.|Mrs\.|Ms\.|Rev\.|PhD\.|MD\.)\s)?[a-zA-Z\.]{2,}(?:\s[a-zA-Z\.]{2,})*$/.test(
-      u_name
-    )
-  ) {
-    errorElement.textContent = "Please enter a valid name.";
+  } else if (!nameRegex.test(u_name)) {
+    errorElement.textContent =
+      "Please enter a valid full name (e.g., Mr. Bipin Chapai).";
   }
 }
 

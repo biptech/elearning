@@ -4,25 +4,22 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include '../includes/config.php';
 
-if (isset($_SESSION['username'])) {
-    $u_username = $_SESSION['username'];
-    $qry = "SELECT * FROM user_signup WHERE u_email = '$u_username'";
+if (isset($_SESSION['u_id'])) { 
+    $u_id = $_SESSION['u_id'];  
+    $qry = "SELECT * FROM user_signup WHERE u_id = '$u_id'";
     $result = mysqli_query($con, $qry);
     
     if ($result && mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        $u_name = $row['u_name'] ?? 'Guest';
-        $u_id = $row['u_id'] ?? 0;
+        $u_name = $row['u_name'];
+        $u_id = $row['u_id'];
+        $profileImage = $row['u_image'] ?? '';
+        $imagePath = "../uploads/images/" . $profileImage;
+        $hasImage = !empty($profileImage) && file_exists($imagePath);
         $parts = explode(' ', $u_name);
-        $firstName = $parts[0] ?? 'Guest';
-    } else {
-        // If no user is found, assign default values
-        $u_name = 'Guest';
-        $u_id = 0;
-        $firstName = 'Guest';
+        $firstName = $parts[0];
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -35,14 +32,15 @@ if (isset($_SESSION['username'])) {
 </head>
 <body>
     <nav class="navbar">
-    <div>
-    <a class="logo" href="index.php" style="display: flex; align-items: center; gap: 8px;">
-        <img src="../images/logo1.png" alt="Logo" style="height: 40px;">
-    </a>
-</div>        
+        <div>
+            <a class="logo" href="index.php" style="display: flex; align-items: center; gap: 8px;">
+                <img src="../images/logo1.png" alt="Logo" style="height: 40px;">
+            </a>
+        </div>
+        
         <!-- Search Bar -->
         <form class="search-bar" action="search.php" method="GET" onsubmit="return validateSearch()">
-          <i class="fa fa-search"></i>
+            <i class="fa fa-search"></i>
             <input type="text" id="search-box" name="query" placeholder="Search for anything" onkeyup="toggleSearchButton()" autocomplete="off">
             <div id="suggestions"></div>
         </form>
@@ -52,35 +50,29 @@ if (isset($_SESSION['username'])) {
             <a href="view_products.php">E-Book</a>
             <a href="#">My Learning</a>
 
-<!-- Profile Dropdown -->
-<div class="profile-section">
-    <?php if (isset($_SESSION['username'])) {
-        $profileImage = $row['u_image'] ?? '';
-        $imagePath = "../uploads/images/" . $profileImage;
-        $hasImage = !empty($profileImage) && file_exists($imagePath);
-        $firstLetter = strtoupper(substr($firstName, 0, 1));
-    ?>
-        <div class="dropdown">
-            <a href="#" id="profileDropdownMenu" class="profile-avatar">
-                <?php if ($hasImage): ?>
-                    <img src="<?php echo $imagePath; ?>" alt="Profile">
-                <?php else: ?>
-                    <div class="profile-initial"><?php echo $firstLetter; ?></div>
-                <?php endif; ?>
-            </a>
-            <div class="dropdown-content" id="profileDropdown">
-                <a href="user-profile.php?u_id=<?php echo $u_id; ?>"><i class="fa fa-user"></i> Profile</a>
-                <a href="log-out.php" onclick="return confirm('Are you sure to log out?')"><i class="fa fa-sign-out"></i> LOG OUT</a>
+            <!-- Profile Dropdown -->
+            <div class="profile-section">
+                <?php if (isset($u_id)) { // User is logged in 
+                // ?>
+                    <div class="dropdown">
+                        <a href="#" id="profileDropdownMenu" class="profile-avatar">
+                            <?php if ($hasImage): ?>
+                                <img src="<?php echo $imagePath; ?>" alt="Profile">
+                            <?php else: ?>
+                                <div class="profile-initial"><?php echo strtoupper(substr($firstName, 0, 1)); ?></div>
+                            <?php endif; ?>
+                        </a>
+                        <div class="dropdown-content" id="profileDropdown">
+                            <a href="user-profile.php?u_id=<?php echo $u_id; ?>"><i class="fa fa-user"></i> Profile</a>
+                            <a href="logout.php" onclick="return confirm('Are you sure to log out?')"><i class="fa fa-sign-out"></i> LOG OUT</a>
+                        </div>
+                    </div>
+                <?php } else { // User is not logged in ?>
+                    <div>
+                        <a href="login.php"><i class="fa fa-sign-in"></i> LOG IN</a>
+                    </div>
+                <?php } ?>
             </div>
-        </div>
-    <?php } else { ?>
-        <div>
-            <a href="login.php"><i class="fa fa-sign-in"></i> LOG IN</a>
-        </div>
-    <?php } ?>
-</div>
-
-</div>
 
         </div>
     </nav>

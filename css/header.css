@@ -100,8 +100,8 @@ body {
 .profile-avatar img {
   width: 35px;
   height: 35px;
-  object-fit: cover; /* Ensures image covers the circle */
-  border-radius: 50%; /* Makes sure the image stays within the circle */
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .profile-initial {
@@ -112,13 +112,11 @@ body {
   justify-content: center;
 }
 
-/* Dropdown container */
 .profile-section {
   position: relative;
   display: inline-block;
 }
 
-/* Dropdown button */
 .profile-section .dropdown a {
   text-decoration: none;
   color: #333;
@@ -129,7 +127,6 @@ body {
   cursor: pointer;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -142,21 +139,18 @@ body {
   overflow: hidden;
 }
 
-/* Dropdown links */
-.dropdown-content a {
+.dropdown-content i {
   display: block;
-  color: #333;
-  padding: 10px;
+  color: rgb(248, 189, 51);
   text-decoration: none;
   transition: background 0.3s;
+  padding: 0 10px;
 }
 
-/* Hover effect */
 .dropdown-content a:hover {
   background-color: #f0f0f0;
 }
 
-/* Show dropdown when .show class is added */
 .dropdown-content.show {
   display: block;
 }
