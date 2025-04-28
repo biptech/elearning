@@ -5,19 +5,13 @@
 <head>
     <title>Our Placements</title>
     <style>
-        body {
-    background-color: #111;
-    color: white;
-    text-align: center;
-    font-family: sans-serif;
-}
 
 .heading {
     font-size: 24px;
     margin: 30px 0;
 }
 
-.highlight {
+.highlight {-
     color: orange;
 }
 
