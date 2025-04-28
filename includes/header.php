@@ -31,19 +31,15 @@ if (isset($_SESSION['username'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navbar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery for AJAX -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../css/header-css.css">
-
+    <link rel="stylesheet" href="../css/header.css">
 </head>
 <body>
     <nav class="navbar">
-        <div><a class="logo" href="index.php">eLearning</a></div>
-        
+    <div>
+    <a class="logo" href="index.php" style="display: flex; align-items: center; gap: 8px;">
+        <img src="../images/logo1.png" alt="Logo" style="height: 40px;">
+    </a>
+</div>        
         <!-- Search Bar -->
         <form class="search-bar" action="search.php" method="GET" onsubmit="return validateSearch()">
           <i class="fa fa-search"></i>
@@ -56,22 +52,36 @@ if (isset($_SESSION['username'])) {
             <a href="view_products.php">E-Book</a>
             <a href="#">My Learning</a>
 
-            <!-- Profile Dropdown -->
-            <div class="profile-section">
-                <?php if (isset($_SESSION['username'])) { ?>
-                    <div class="dropdown">
-                        <a href="#" id="profileDropdownMenu"><i class="fa fa-user-circle-o"></i> <?php echo $firstName; ?></a>
-                        <div class="dropdown-content" id="profileDropdown">
-                            <a href="user-profile.php?u_id=<?php echo $u_id; ?>"><i class="fa fa-user"></i> Profile</a>
-                            <a href="logout.php" onclick="return confirm('Are you sure to log out?')"><i class="fa fa-sign-out"></i> LOG OUT</a>
-                        </div>
-                    </div>
-                <?php } else { ?>
-                    <div>
-                        <a href="login.php"><i class="fa fa-sign-in"></i> LOG IN</a>
-                    </div>
-                <?php } ?>
+<!-- Profile Dropdown -->
+<div class="profile-section">
+    <?php if (isset($_SESSION['username'])) {
+        $profileImage = $row['u_image'] ?? '';
+        $imagePath = "../uploads/images/" . $profileImage;
+        $hasImage = !empty($profileImage) && file_exists($imagePath);
+        $firstLetter = strtoupper(substr($firstName, 0, 1));
+    ?>
+        <div class="dropdown">
+            <a href="#" id="profileDropdownMenu" class="profile-avatar">
+                <?php if ($hasImage): ?>
+                    <img src="<?php echo $imagePath; ?>" alt="Profile">
+                <?php else: ?>
+                    <div class="profile-initial"><?php echo $firstLetter; ?></div>
+                <?php endif; ?>
+            </a>
+            <div class="dropdown-content" id="profileDropdown">
+                <a href="user-profile.php?u_id=<?php echo $u_id; ?>"><i class="fa fa-user"></i> Profile</a>
+                <a href="log-out.php" onclick="return confirm('Are you sure to log out?')"><i class="fa fa-sign-out"></i> LOG OUT</a>
             </div>
+        </div>
+    <?php } else { ?>
+        <div>
+            <a href="login.php"><i class="fa fa-sign-in"></i> LOG IN</a>
+        </div>
+    <?php } ?>
+</div>
+
+</div>
+
         </div>
     </nav>
 
