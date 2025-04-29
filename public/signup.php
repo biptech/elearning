@@ -1,12 +1,18 @@
 <?php 
+session_start(); // Important: Start session at the very top!
+
 include '../includes/config.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require '../vendor/autoload.php';
 
 // Initialize variables
-$u_name = $u_address = $u_email = $u_phone = $u_gender = $u_password = '';
+$u_name = $u_address = $u_email = $u_phone = $u_gender = '';
 $errors = [];
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     function sanitizeInput($data) {
         return trim(htmlspecialchars($data));
     }
@@ -15,11 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $u_address = sanitizeInput($_POST['u_address']);
     $u_email = sanitizeInput($_POST['u_email']);
     $u_phone = sanitizeInput($_POST['u_phone']);
-    $u_gender = $_POST['u_gender'];
+    $u_gender = sanitizeInput($_POST['u_gender']);
     $u_password = $_POST['u_password'];
     $u_cpassword = $_POST['u_cpassword'];
 
-    // Image upload handling
     $u_image = $_FILES['u_image'];
     $image_name = '';
     $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
@@ -38,10 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upload_path = "../uploads/images/" . $image_name;
             move_uploaded_file($image_tmp, $upload_path);
         }
-
-    } else {
-        $image_name = ''; 
-    }    
+    }
 
     // Validation
     if (empty($u_name)) {
@@ -63,21 +65,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Passwords do not match.";
     }
 
-    // If valid, insert into database
     if (empty($errors)) {
         $hashed_password = password_hash($u_password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO user_signup (u_name, u_address, u_email, u_phone, u_gender, u_password, u_image)
-                VALUES ('$u_name', '$u_address', '$u_email', '$u_phone', '$u_gender', '$hashed_password', '$image_name')";
+        $verify_token = bin2hex(random_bytes(16)); // Token for link verification
+        $verify_code = rand(100000, 999999);        // 6-digit manual code verification
 
-        if (mysqli_query($con, $sql)) {
-            echo '<script type="text/javascript">
-                    alert("Sign Up Successfully!\nNow Log in With Your Email and Password");
-                    window.location.assign("login.php");
-                  </script>';
-            exit();
+        // Insert into database
+        $stmt = mysqli_prepare($con, "INSERT INTO user_signup (u_name, u_address, u_email, u_phone, u_gender, u_password, u_image, verify_token, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)");
+        mysqli_stmt_bind_param($stmt, "ssssssss", $u_name, $u_address, $u_email, $u_phone, $u_gender, $hashed_password, $image_name, $verify_token);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $verify_link = "http://localhost/elearning/public/verify.php?token=$verify_token";
+
+            $mail = new PHPMailer(true);
+
+            try {
+                // Server settings
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'bipinchapai2059@gmail.com'; 
+                $mail->Password   = 'opkd dklo rzuo ldtc';     
+                $mail->SMTPSecure = 'tls';
+                $mail->Port       = 587;
+
+                // Recipients
+                $mail->setFrom('bipinchapai2059@gmail.com', 'Bipin Chapai');
+                $mail->addAddress($u_email, $u_name);
+
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Verify Your Email';
+                $mail->Body    = "
+                    <h1>Email Verification</h1>
+                    <p>Hi <b>$u_name</b>,</p>
+                    <p>Please verify your email by clicking the link below:</p>
+                    <p><a href='$verify_link'>Verify Email</a></p>
+                    <hr>
+                    <p>Or use this 6-digit verification code:</p>
+                    <h2>$verify_code</h2>
+                ";
+
+                $mail->send();
+
+                // Store verification code in session
+                $_SESSION['email_verify_code'] = $verify_code;
+                $_SESSION['email_to_verify'] = $u_email;
+
+                echo '<script>
+                        alert("Sign Up Successful! Please check your email to verify your account.");
+                        window.location.href = "verify.php";
+                      </script>';
+                exit();
+
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
         } else {
-            echo "Error: " . mysqli_error($con);
+            echo "Database Error: " . mysqli_error($con);
         }
+
+        mysqli_stmt_close($stmt);
     }
 }
 ?>
@@ -156,8 +204,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </form>
 </div>
+
+<?php include '../includes/footer.php'; ?>
+
+<script src="../js/form_validation.js"></script>
+
 <script>
-  function loadPreview(input) {
+// Preview uploaded image
+function loadPreview(input) {
     var file = input.files[0];
     if (file) {
         var reader = new FileReader();
@@ -169,6 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Toggle password visibility
 document.querySelectorAll('.toggle-password').forEach(function (eyeIcon) {
     eyeIcon.addEventListener('click', function () {
         const input = document.querySelector(this.getAttribute('toggle'));
@@ -178,10 +233,7 @@ document.querySelectorAll('.toggle-password').forEach(function (eyeIcon) {
         this.classList.toggle('fa-eye-slash');
     });
 });
-
 </script>
 
-<script src="../js/valid.js"></script>
-<?php include '../includes/footer.php'; ?>
 </body>
 </html>

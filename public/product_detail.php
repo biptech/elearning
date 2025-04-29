@@ -2,8 +2,7 @@
 session_start();
 include('../includes/config.php');
 
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['u_id'])) {
     echo "<script> window.location.href='login.php';</script>";
     exit();
 }
@@ -28,7 +27,6 @@ try {
 
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Store in session as recently viewed
 if (!isset($_SESSION['viewed_items'])) {
     $_SESSION['viewed_items'] = [];
 }

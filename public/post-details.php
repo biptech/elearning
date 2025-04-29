@@ -2,37 +2,30 @@
 session_start();
 include('../includes/config.php');
 
-// Initialize post and product IDs
 $post_id = isset($_GET['nid']) ? intval($_GET['nid']) : 0;
 $product_id = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
 
-// Handle viewed items in session
 if (!isset($_SESSION['viewed_items'])) {
     $_SESSION['viewed_items'] = []; // Initialize viewed_items session if it doesn't exist
 }
 
-// Avoid adding duplicate entries for posts
 if ($post_id && !in_array($post_id, array_column($_SESSION['viewed_items'], 'id'))) {
     $_SESSION['viewed_items'][] = ['id' => $post_id, 'type' => 'post'];  
 }
 
-// Avoid adding duplicate entries for products
 if ($product_id && !in_array($product_id, array_column($_SESSION['viewed_items'], 'id'))) {
     $_SESSION['viewed_items'][] = ['id' => $product_id, 'type' => 'product'];  
 }
 
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['u_id'])) {
     echo "<script> window.location.href='login.php';</script>";
     exit();
 }
 
-// Generating CSRF Token if not already set
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 
-// Handling comment submission
 if (isset($_POST['submit'])) {
     // Verifying CSRF Token
     if (!empty($_POST['csrftoken'])) {
@@ -54,7 +47,6 @@ if (isset($_POST['submit'])) {
     }
 }
 
-// Updating post view counter
 $postid = intval($_GET['nid']);
 $sql = "SELECT viewCounter FROM tblposts WHERE id = '$postid'";
 $result = $con->query($sql);

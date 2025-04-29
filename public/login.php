@@ -2,23 +2,66 @@
 session_start();
 include '../includes/config.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $u_email = mysqli_real_escape_string($con, $_POST['u_email']);
-    $u_password = $_POST['u_password'];
+if (isset($_SESSION['u_id'])) {
+    header("Location: " . ($_SESSION['redirect_to'] ?? 'index.php'));
+    exit();
+}
 
-    $qry = "SELECT u_id, u_password FROM user_signup WHERE u_email = '$u_email'";
-    $result = mysqli_query($con, $qry);
+if (isset($_GET['token'])) {
+    $token = mysqli_real_escape_string($con, $_GET['token']);
+} elseif (isset($_POST['verify_token'])) {
+    $token = mysqli_real_escape_string($con, $_POST['verify_token']);
+} else {
+    $token = '';
+}
 
-    if (mysqli_num_rows($result) === 1) {
-        $row = mysqli_fetch_assoc($result);
+if ($token) {
+    $stmt = $con->prepare("SELECT u_id FROM user_signup WHERE verify_token = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if (password_verify($u_password, $row['u_password'])) {
-            $_SESSION['loggedin'] = true;
-            $_SESSION['u_id'] = $row['u_id'];
-            $_SESSION['username'] = $u_email;
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $u_id = $row['u_id'];
+
+        // Update user as verified
+        $update_stmt = $con->prepare("UPDATE user_signup SET is_verified = 1, verify_token = NULL WHERE u_id = ?");
+        $update_stmt->bind_param("i", $u_id);
+        $update_stmt->execute();
+
+        echo '<script>alert("Email Verified Successfully! Please Login."); window.location.href="login.php";</script>';
+        exit();
+    } else {
+        echo '<script>alert("Invalid or expired verification code.");</script>';
+    }
+}
+
+$errors = [];
+
+if (isset($_POST['submit'])) {
+    $email = mysqli_real_escape_string($con, trim($_POST['u_email']));
+    $password = mysqli_real_escape_string($con, trim($_POST['u_password']));
+
+    $check_user = mysqli_query($con, "SELECT * FROM user_signup WHERE u_email = '$email' LIMIT 1");
+
+    if (mysqli_num_rows($check_user) > 0) {
+        $user = mysqli_fetch_assoc($check_user);
+
+        if ($user['is_verified'] == 0) {
+            $errors[] = "Please verify your email first!";
+        } elseif (password_verify($password, $user['u_password'])) {
+            // Password is correct and email is verified
+            $_SESSION['u_id'] = $user['u_id'];
+            $_SESSION['u_email'] = $user['u_email'];
+            $_SESSION['u_name'] = $user['u_name'];
 
             $redirect_to = $_SESSION['redirect_to'] ?? 'index.php';
-            echo '<script>alert("Logged in Successfully!"); window.location.href="' . $redirect_to . '";</script>';
+
+            echo '<script>
+                    alert("Logged in Successfully!");
+                    window.location.href = "' . $redirect_to . '";
+                  </script>';
             exit();
         } else {
             echo '<script>alert("Invalid Credentials!");</script>';
@@ -38,6 +81,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login</title>
     <link rel="stylesheet" href="../css/signup.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .error-messages {
+            color: white;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .error-messages p {
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
@@ -45,7 +100,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-body">
         <form action="login.php" method="POST" class="login-form">
             <p class="login-txt"><i class="fa-solid fa-right-to-bracket"></i> LOG IN</p>
-            
+
+            <?php if (!empty($errors)): ?>
+                <div class="error-messages">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
             <div class="l-inputs">
                 <input type="text" name="u_email" placeholder="Email" required />
             </div>
@@ -59,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <p><a href="get-email-update-password.php" class="e-option">Forgot Password?</a></p>
-            <p><a href="sign-up.php" class="e-option">Create New Account</a></p>
+            <p><a href="signup.php" class="e-option">Create New Account</a></p>
         </form>
     </div>
 
