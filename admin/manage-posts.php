@@ -1,5 +1,4 @@
 <?php
-session_start();
 include('includes/config.php');
 
 // Session timeout
@@ -13,10 +12,10 @@ if (!isset($_SESSION['last_activity'])) {
 }
 $_SESSION['last_activity'] = time();
 
-if (strlen($_SESSION['login']) == 0) {
-    header('location:index.php');
-    exit;
-}
+// if (strlen($_SESSION['login']) == 900) {
+//     header('location:index.php');
+//     exit;
+// }
 
 // Delete post logic
 if (isset($_GET['del'])) {

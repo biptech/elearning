@@ -151,7 +151,7 @@
                     ");
 
                     while ($row = mysqli_fetch_array($query)) {
-                        $link = isset($_SESSION['username']) 
+                        $link = isset($_SESSION['u_id']) 
                             ? 'post-details.php?nid=' . htmlentities($row['pid']) 
                             : 'login.php';
                 ?>

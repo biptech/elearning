@@ -14,7 +14,7 @@ try {
 }
 
 // Ensure user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['u_id'])) {
     echo "<script>alert('Please log in to shop.'); window.location.href='login.php';</script>";
     exit();
 }
