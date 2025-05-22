@@ -35,13 +35,12 @@ try {
     }
 
     $already_viewed = false;
-foreach ($_SESSION['viewed_items'] as $item) {
-    if (is_array($item) && isset($item['id'], $item['type']) && $item['id'] == $productId && $item['type'] == 'product') {
-        $already_viewed = true;
-        break;
+    foreach ($_SESSION['viewed_items'] as $item) {
+        if (is_array($item) && isset($item['id'], $item['type']) && $item['id'] == $productId && $item['type'] == 'product') {
+            $already_viewed = true;
+            break;
+        }
     }
-}
-
 
     if (!$already_viewed) {
         $_SESSION['viewed_items'][] = ['id' => $productId, 'type' => 'product'];
@@ -52,10 +51,17 @@ foreach ($_SESSION['viewed_items'] as $item) {
 
     // Check if product is already in cart
     $user_id = $_SESSION['u_id'];
+    $user_email = $_SESSION['u_email'];
     $in_cart = false;
     $cart_stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = ? AND pid = ?");
     $cart_stmt->execute([$user_id, $productId]);
     $in_cart = $cart_stmt->rowCount() > 0;
+
+    // Check if user already purchased this product
+    $purchased = false;
+    $order_stmt = $conn->prepare("SELECT * FROM orders WHERE product_id = ? AND customer_email = ? AND payment_status = 'completed'");
+    $order_stmt->execute([$productId, $user_email]);
+    $purchased = $order_stmt->rowCount() > 0;
 
     // Generate CSRF token
     if (!isset($_SESSION['csrf_token'])) {
@@ -168,12 +174,16 @@ foreach ($_SESSION['viewed_items'] as $item) {
         <p class="price">Rs. <?= htmlentities($product['price']) ?></p>
 
         <div class="button-group" id="cart-action">
-            <?php if ($in_cart): ?>
-                <a href="cart.php" class="btn cart">Go to Cart</a>
+            <?php if ($purchased): ?>
+                <a href="course_detail.php?id=<?= $productId ?>" class="btn cart">Learn More</a>
             <?php else: ?>
-                <button class="btn add" onclick="addToCart(<?= $productId ?>)">Add to Cart</button>
+                <?php if ($in_cart): ?>
+                    <a href="cart.php" class="btn cart">Go to Cart</a>
+                <?php else: ?>
+                    <button class="btn add" onclick="addToCart(<?= $productId ?>)">Add to Cart</button>
+                <?php endif; ?>
+                <a href="../payment/checkout.php?product_id=<?= $productId ?>" class="btn buy">Buy Now</a>
             <?php endif; ?>
-            <a href="../payment/checkout.php?product_id=<?= $productId ?>" class="btn buy">Buy Now</a>
         </div>
     </div>
 </div>
