@@ -17,7 +17,7 @@ if (isset($_GET['del']) && is_numeric($_GET['del'])) {
     <title>Manage Products</title>
     <style>
         body { font-family: Arial; background: #f0f0f0; }
-        .main-container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
+        .main-container { max-width: 1000px; margin: 60px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #f7f7f7; }

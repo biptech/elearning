@@ -1,15 +1,20 @@
 <?php
-$qry = "SELECT * FROM tbladmin WHERE id = 2";
+session_start();
 include '../includes/config.php';
-$result = mysqli_query($con, $qry);
-$row = mysqli_fetch_assoc($result);
+
+if (!isset($_SESSION['login'])) {
+    header("Location: ../index.php");
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Online Education & Learning System</title>
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
     <style>
         body.custom-body {
             margin: 0;
@@ -63,6 +68,7 @@ $row = mysqli_fetch_assoc($result);
             display: none;
             width: 180px;
             border-radius: 8px;
+            animation: fadeIn 0.3s ease;
         }
 
         .custom-user-box:hover .custom-user-dropdown {
@@ -89,13 +95,6 @@ $row = mysqli_fetch_assoc($result);
             color: #333;
         }
 
-        .custom-menu-button {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 20px;
-        }
-
         .topbar-left {
             display: flex;
             align-items: center;
@@ -104,11 +103,6 @@ $row = mysqli_fetch_assoc($result);
 
         .topbar-left a {
             text-decoration: none;
-        }
-
-        /* Optional: Add some animations for dropdown */
-        .custom-user-dropdown {
-            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -122,40 +116,24 @@ $row = mysqli_fetch_assoc($result);
             }
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function checkAvailability() {
-            $("#loaderIcon").show();
-            jQuery.ajax({
-                url: "check_availability.php",
-                data: 'username=' + $("#sadminusername").val(),
-                type: "POST",
-                success: function(data) {
-                    $("#user-availability-status").html(data);
-                    $("#loaderIcon").hide();
-                },
-                error: function() {}
-            });
-        }
-    </script>
 </head>
 <body class="custom-body">
 <div id="wrapper" class="custom-wrapper">
     <div class="topbar custom-topbar">
         <div class="topbar-left">
-            <a href="index.php" class="logo">
-                <img src="../images/logo.png" alt="Logo" class="custom-logo-img">
+            <a href="dashboard.php" class="logo">
+                <img src="../images/logo1.png" alt="Logo" class="custom-logo-img">
             </a>
         </div>
         <div class="navbar custom-navbar">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown user-box custom-user-box">
                     <a href="#" class="dropdown-toggle user-link custom-user-link">
-                        <img src="assets/images/users/avatar-1.jpg" alt="User" class="img-circle user-img custom-user-img">
+                        <img src="assets/images/users/avatar-1.jpg" alt="User Avatar" class="custom-user-img">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right user-list custom-user-dropdown">
                         <li>
-                            <h5 class="custom-welcome-text">Hi, <?php echo $row['AdminUserName']; ?></h5>
+                            <h5 class="custom-welcome-text">Hi, <?php echo $adminUserName; ?></h5>
                         </li>
                         <li><a href="change-password.php" class="custom-dropdown-link"><i class="ti-settings"></i> Change Password</a></li>
                         <li><a href="logout.php" class="custom-dropdown-link"><i class="ti-power-off"></i> Logout</a></li>

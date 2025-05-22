@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include '../includes/header.php'; ?>
 
 <div class="signup-body">
-<form action="sign-up.php" class="sign-up" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+<form action="signup.php" class="sign-up" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
         <div class="sign-up-form">
             <p class="signup-txt"> <i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</p>
             <div class="s-inputs">

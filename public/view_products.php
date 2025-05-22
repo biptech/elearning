@@ -12,6 +12,15 @@ try {
     echo "Connection failed: " . $e->getMessage();
     exit();
 }
+<<<<<<< HEAD
+=======
+
+// Ensure user is logged in
+if (!isset($_SESSION['u_id'])) {
+    echo "<script>alert('Please log in to shop.'); window.location.href='login.php';</script>";
+    exit();
+}
+>>>>>>> c00cb56cf65b7f83776a1ca8ca37da10ebc24a9f
 ?>
 <!DOCTYPE html>
 <html lang="en">

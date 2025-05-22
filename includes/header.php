@@ -33,7 +33,7 @@ if (isset($_SESSION['u_id'])) {
 <body>
     <nav class="navbar">
         <div>
-            <a class="logo" href="index.php" style="display: flex; align-items: center; gap: 8px;">
+            <a class="logo" href="../public/index.php" style="display: flex; align-items: center; gap: 8px;">
                 <img src="../images/logo1.png" alt="Logo" style="height: 40px;">
             </a>
         </div>
